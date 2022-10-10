@@ -132,13 +132,13 @@ var ThemeRoutes = [
     child: [
       {
         path: "/ui-components/alert",
-        name: "Cargo",
+        name: "Alerts",
         icon: "mdi mdi-comment-processing-outline",
         component: Alerts,
       },
       {
         path: "/ui-components/badge",
-        name: "Cargo Laboral",
+        name: "Badges",
         icon: "mdi mdi-arrange-send-backward",
         component: Badges,
       },

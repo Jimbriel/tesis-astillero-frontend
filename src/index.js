@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import Spinner from "./views/spinner/Spinner";
 import "./assets/scss/style.scss";
 import "./data";
+import "./assets/scss/estilosPersonalizados.css";
 
 // setup fake backend
 import { ConfigureFakeBackend } from "./jwt/_helpers";
