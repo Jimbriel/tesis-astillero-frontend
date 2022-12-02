@@ -11,6 +11,12 @@
   // -----------------------------------------
   // basic setting of font colors
   // -----------------------------------------
+  .ant-picker-suffix,
+  .ant-picker,
+  .ant-select-arrow,
+  .ant-form-item-label > label
+  .ant-collapse > .ant-collapse-item > .ant-collapse-header,
+  .ant-table,
   .ant-card-head, .ant-card,
   a.link,
   .page-wrapper,
@@ -59,6 +65,12 @@
   // -----------------------------------------
   // basic settings of background colors
   // -----------------------------------------
+  .ant-input-affix-wrapper,
+  .ant-picker,
+  .ant-select-status-error.ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer) .ant-select-selector,
+  .ant-select-selector,.ant-select:not(.ant-select-customize-input) .ant-select-selector, 
+  .site-collapse-custom-collapse .site-collapse-custom-panel,
+  .ant-table,
   .card,
   .ant-card,
   .custom-select,
