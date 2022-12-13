@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Nav,
   NavItem,
@@ -32,8 +32,11 @@ import logolighticon from "../../../assets/images/logo-light-icon.png";
 import logodarktext from "../../../assets/images/logo-text.png";
 import logolighttext from "../../../assets/images/logo-light-text.png";
 import profilephoto from "../../../assets/images/users/5.jpg";
+import { AuthenticationService } from "../../../jwt/_services";
+import { setLoginError } from "../../../redux/auth/authDucks";
 
 export default () => {
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [collapse, setCollapse] = useState(false);
 
@@ -124,7 +127,7 @@ export default () => {
           </span>
         </div>
         <Collapse
-          className="navbarbg"
+          className="navbarbg d-none"
           isOpen={isOpen}
           navbar
           data-navbarbg={settings.activeNavbarBg}
@@ -163,7 +166,7 @@ export default () => {
             {/*--------------------------------------------------------------------------------*/}
             {/* Start Notifications Dropdown                                                   */}
             {/*--------------------------------------------------------------------------------*/}
-            <UncontrolledDropdown nav inNavbar>
+            <UncontrolledDropdown nav inNavbar className="d-none">
               <DropdownToggle nav caret>
                 <i className="mdi mdi-message font-18" />
               </DropdownToggle>
@@ -206,7 +209,7 @@ export default () => {
             {/*--------------------------------------------------------------------------------*/}
             {/* Start Messages Dropdown                                                        */}
             {/*--------------------------------------------------------------------------------*/}
-            <UncontrolledDropdown nav inNavbar>
+            <UncontrolledDropdown nav inNavbar className="d-none">
               <DropdownToggle nav caret>
                 <i className="font-18 mdi mdi-email" />
               </DropdownToggle>
@@ -252,7 +255,7 @@ export default () => {
             {/*--------------------------------------------------------------------------------*/}
             {/* Start Mega Menu Dropdown                                                       */}
             {/*--------------------------------------------------------------------------------*/}
-            <UncontrolledDropdown nav inNavbar className="mega-dropdown">
+            <UncontrolledDropdown nav inNavbar className="mega-dropdown d-none">
               <DropdownToggle nav>
                 {" "}
                 <i className="mdi mdi-view-grid font-18" />
@@ -413,7 +416,7 @@ export default () => {
             {/*--------------------------------------------------------------------------------*/}
             {/* Start Create New Dropdown                                                      */}
             {/*--------------------------------------------------------------------------------*/}
-            <UncontrolledDropdown nav inNavbar>
+            {/* <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav>
                 <i className="flag-icon flag-icon-us"></i>
               </DropdownToggle>
@@ -431,7 +434,7 @@ export default () => {
                   <i className="flag-icon flag-icon-de"></i> Dutch
                 </DropdownItem>
               </DropdownMenu>
-            </UncontrolledDropdown>
+            </UncontrolledDropdown> */}
             {/*--------------------------------------------------------------------------------*/}
             {/* End Create New Dropdown                                                        */}
             {/*--------------------------------------------------------------------------------*/}
@@ -462,7 +465,7 @@ export default () => {
                     <p className=" mb-0">varun@gmail.com</p>
                   </div>
                 </div>
-                <DropdownItem>
+                {/* <DropdownItem>
                   <i className="ti-user mr-1 ml-1" /> My Account
                 </DropdownItem>
                 <DropdownItem>
@@ -475,14 +478,19 @@ export default () => {
                 <DropdownItem>
                   <i className="ti-settings mr-1 ml-1" /> Account Settings
                 </DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem href="/pages/login">
+                <DropdownItem divider /> */}
+                <DropdownItem
+                  onClick={() => {
+                    dispatch(setLoginError());
+                    AuthenticationService.logout();
+                  }} /* href="/pages/login" */
+                >
                   <i className="fa fa-power-off mr-1 ml-1" /> Logout
                 </DropdownItem>
-                <DropdownItem divider />
+                {/* <DropdownItem divider />
                 <Button color="success" className="btn-rounded ml-3 mb-2 mt-2">
                   View Profile
-                </Button>
+                </Button> */}
               </DropdownMenu>
             </UncontrolledDropdown>
             {/*--------------------------------------------------------------------------------*/}

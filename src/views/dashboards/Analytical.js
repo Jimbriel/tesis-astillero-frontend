@@ -26,7 +26,7 @@ import AntStats2 from "../../components/dashboard/stats2/AntStats2";
 
 const Analytical = () => {
   return (
-    <div>
+    <div className="d-none">
       <AntStats2/>
       <Row>
         <Col sm={12} lg={9}>

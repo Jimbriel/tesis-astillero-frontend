@@ -4,31 +4,36 @@ import {
   InputGroupAddon,
   InputGroupText,
   Input,
-  CustomInput,
+  // CustomInput,
   FormGroup,
   Row,
   Col,
-  UncontrolledTooltip,
+  // UncontrolledTooltip,
   Button,
 } from "reactstrap";
 import img1 from "../../assets/images/logo-icon.png";
-import img2 from "../../assets/images/background/login-register.jpg";
+// import img2 from "../../assets/images/background/login-register.jpg";
+import img3 from "../../assets/images/tesis/fondo2.jpg";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { AuthenticationService } from "../../jwt/_services";
+import { useDispatch } from "react-redux";
+import { setLoginSuccess } from "../../redux/auth/authDucks";
 const sidebarBackground = {
-  backgroundImage: "url(" + img2 + ")",
+  backgroundImage: "url(" + img3 + ")",
   backgroundRepeat: "no-repeat",
   backgroundPosition: "bottom center",
+  backgroundSize: "cover",
 };
 
 const Login = (props) => {
-  const handleClick = () => {
-    var elem = document.getElementById("loginform");
-    elem.style.transition = "all 2s ease-in-out";
-    elem.style.display = "none";
-    document.getElementById("recoverform").style.display = "block";
-  };
+  const dispatch = useDispatch();
+  // const handleClick = () => {
+  //   var elem = document.getElementById("loginform");
+  //   elem.style.transition = "all 2s ease-in-out";
+  //   elem.style.display = "none";
+  //   document.getElementById("recoverform").style.display = "block";
+  // };
 
   return (
     <div className="">
@@ -45,18 +50,17 @@ const Login = (props) => {
               <span className="db">
                 <img src={img1} alt="logo" />
               </span>
-              <h5 className="font-medium mb-3">Sign In to Admin</h5>
-              <div className="alert alert-success">
-                Username: test & Password: test
-              </div>
+              <h5 className="font-medium mb-3">Iniciar Sesión</h5>
             </div>
             <Row>
               <Col xs="12">
                 <Formik
-                  initialValues={{
-                    username: "test",
-                    password: "test",
-                  }}
+                  initialValues={
+                    {
+                      // username: "test",
+                      // password: "test",
+                    }
+                  }
                   validationSchema={Yup.object().shape({
                     username: Yup.string().required("Username is required"),
                     password: Yup.string().required("Password is required"),
@@ -66,11 +70,26 @@ const Login = (props) => {
                     { setStatus, setSubmitting }
                   ) => {
                     setStatus();
-                    AuthenticationService.login(username, password).then(
+
+                    // dispatch(
+                    //   setLoginSuccess({
+                    //     username: username,
+                    //     password: password,
+                    //     location: props.location.state,
+                    //   })
+                    // );
+
+                    AuthenticationService.login({
+                      email: username,
+                      password,
+                    }).then(
                       (user) => {
                         const { from } = props.location.state || {
                           from: { pathname: "/" },
                         };
+
+                        console.log(user);
+                        dispatch(setLoginSuccess(user));
                         props.history.push(from);
                       },
                       (error) => {
@@ -90,6 +109,7 @@ const Login = (props) => {
 
                         <Field
                           name="username"
+                          placeholder="Email"
                           type="text"
                           className={
                             "form-control" +
@@ -112,6 +132,7 @@ const Login = (props) => {
                         </InputGroupAddon>
                         <Field
                           name="password"
+                          placeholder="Contraseña"
                           type="password"
                           className={
                             "form-control" +
@@ -126,7 +147,7 @@ const Login = (props) => {
                           className="invalid-feedback"
                         />
                       </InputGroup>
-                      <div className="d-flex no-block align-items-center mb-3">
+                      {/* <div className="d-flex no-block align-items-center mb-3">
                         <CustomInput
                           type="checkbox"
                           id="exampleCustomCheckbox"
@@ -142,7 +163,7 @@ const Login = (props) => {
                             <i className="fa fa-lock mr-1"></i> Forgot pwd?
                           </a>
                         </div>
-                      </div>
+                      </div> */}
                       <Row className="mb-3">
                         <Col xs="12">
                           <button
@@ -154,7 +175,7 @@ const Login = (props) => {
                           </button>
                         </Col>
                       </Row>
-                      <div className="text-center mb-2">
+                      {/* <div className="text-center mb-2">
                         <div className="social">
                           <Button
                             id="UncontrolledTooltipExample1"
@@ -189,10 +210,10 @@ const Login = (props) => {
                             Google Plus
                           </UncontrolledTooltip>
                         </div>
-                      </div>
-                      {status && (
+                      </div> */}
+                      {/* {status && (
                         <div className={"alert alert-danger"}>{status}</div>
-                      )}
+                      )} */}
                     </Form>
                   )}
                 />

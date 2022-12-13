@@ -6,6 +6,7 @@ import contactReducer from "./contacts/";
 import emailReducer from "./email/";
 import maintodoReducer from "./todos/Todos";
 import todoReducer from "./todos/";
+import authReducer from "./auth/authDucks";
 
 const Reducers = combineReducers({
   settings,
@@ -15,6 +16,7 @@ const Reducers = combineReducers({
   notesReducer,
   todoReducer,
   maintodoReducer,
+  auth: authReducer,
 });
 
 export default Reducers;
