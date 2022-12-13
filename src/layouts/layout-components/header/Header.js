@@ -31,12 +31,13 @@ import logodarkicon from "../../../assets/images/logo-icon.png";
 import logolighticon from "../../../assets/images/logo-light-icon.png";
 import logodarktext from "../../../assets/images/logo-text.png";
 import logolighttext from "../../../assets/images/logo-light-text.png";
-import profilephoto from "../../../assets/images/users/5.jpg";
+import profilephoto from "../../../assets/images/users/1.jpg";
 import { AuthenticationService } from "../../../jwt/_services";
 import { setLoginError } from "../../../redux/auth/authDucks";
 
 export default () => {
   const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState(false);
   const [collapse, setCollapse] = useState(false);
 
@@ -461,8 +462,8 @@ export default () => {
                     />
                   </div>
                   <div className="ml-2">
-                    <h4 className="mb-0 text-white">Steave Jobs</h4>
-                    <p className=" mb-0">varun@gmail.com</p>
+                    <h4 className="mb-0 text-white">{auth.data_user.nombres}</h4>
+                    <p className=" mb-0">{auth.data_user.usuario}</p>
                   </div>
                 </div>
                 {/* <DropdownItem>

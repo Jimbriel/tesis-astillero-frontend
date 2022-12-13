@@ -5,9 +5,10 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import { useSelector } from "react-redux";
 import FeatherIcon from "feather-icons-react";
 
-import profile from "../../../assets/images/users/5.jpg";
+import profile from "../../../assets/images/users/1.jpg";
 
 const Sidebar = (props) => {
+  const auth = useSelector((state) => state.auth);
   const activeRoute = (routeName) => {
     return props.location.pathname.indexOf(routeName) > -1 ? "selected" : "";
   };
@@ -72,11 +73,11 @@ const Sidebar = (props) => {
                 aria-expanded="false"
               >
                 <img src={profile} alt="user" />
-                <span className="hide-menu">Steave Jobs </span>
+                <span className="hide-menu">{auth.data_user.nombres} </span>
               </span>
               <Collapse isOpen={state.collapse}>
                 <ul>
-                  <li>
+                  {/* <li>
                     <a
                       href="/sample-pages/profile"
                       className="sidebar-link p-0"
@@ -93,7 +94,7 @@ const Sidebar = (props) => {
                     <a href="/email" className="sidebar-link p-0">
                       Inbox
                     </a>
-                  </li>
+                  </li> */}
                   <li>
                     <a
                       href="/authentication/login"
@@ -106,6 +107,8 @@ const Sidebar = (props) => {
               </Collapse>
             </li>
             {props.routes.map((prop, key) => {
+                return <></>
+
               if (prop.redirect) {
                 return null;
               } else if (prop.navlabel) {
@@ -121,7 +124,6 @@ const Sidebar = (props) => {
               } else if (prop.collapse) {
                 let firstdd = {};
                 firstdd[prop.state] = !state[prop.state];
-
                 return (
                   <li
                     className={activeRoute(prop.path) + " sidebar-item"}
