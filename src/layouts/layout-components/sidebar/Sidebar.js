@@ -107,7 +107,7 @@ const Sidebar = (props) => {
               </Collapse>
             </li>
             {props.routes.map((prop, key) => {
-                return <></>
+                // return <></>
 
               if (prop.redirect) {
                 return null;
