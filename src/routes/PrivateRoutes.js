@@ -1,4 +1,5 @@
 import React from "react";
+// import { useSelector } from "react-redux";
 import { Route, Redirect } from "react-router-dom";
 import { AuthenticationService } from "../jwt/_services";
 
@@ -6,6 +7,7 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={(props) => {
+      // const auth = useSelector((state) => state.auth);
       const currentUser = AuthenticationService.currentUserValue;
       if (!currentUser) {
         // not logged in so redirect to login page with the return url
@@ -17,16 +19,16 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
             }}
           />
         );
-      }  else {
+      } else {
         if (props.location.pathname === "/") {
           var path = "/dashboards/main";
-          //console.log(currentUser.user.id_perfil);
-          // if (parseInt(currentUser.user.id_perfil) === 34) {
+          // console.log(auth.data_user?.perfil);
+          // if (parseInt(auth.data_user?.perfil) === 1) {
           //   //  console.log("currentUser.user.id_perfil");
           //   // console.log(currentUser.user.id_perfil);
           //   path = "/ecommerce/catalogo";
           // }
-          // if (parseInt(currentUser.user.id_perfil) === 38) {
+          // if (parseInt(auth.data_user?.perfil) === 38) {
           //   path = "/Kipit-Home";
           // }
           return (
@@ -39,7 +41,6 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
             />
           );
         } else {
-
           return <Component {...props} />;
         }
       }

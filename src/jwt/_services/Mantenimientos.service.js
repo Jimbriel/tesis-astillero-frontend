@@ -7,8 +7,40 @@ export const MantenimientosService = {
     filtrarPerfil,
     crearPerfil,
     actualizarPerfil,
+
+    filtrarUsuarios,
+    actualizarUsuario,
     
   };
+
+  function actualizarUsuario(data) {
+    const requestOptions = {
+      method: "post",
+      headers: AuthHeader(),
+      body: JSON.stringify(data),
+    };
+
+  
+    return fetch(`${Url}mantenimientos/actualizarUsuario`, requestOptions)
+      .then(HandleResponse)
+      .then((response) => {
+        return response;
+      });
+  }
+  function filtrarUsuarios(data) {
+    const requestOptions = {
+      method: "post",
+      headers: AuthHeader(),
+      body: JSON.stringify(data),
+    };
+
+  
+    return fetch(`${Url}mantenimientos/filtrarUsuarios`, requestOptions)
+      .then(HandleResponse)
+      .then((response) => {
+        return response;
+      });
+  }
 
   function filtrarPerfil(data) {
     const requestOptions = {

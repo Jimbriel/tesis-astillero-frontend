@@ -57,8 +57,8 @@ const Login = (props) => {
                 <Formik
                   initialValues={
                     {
-                      // username: "test",
-                      // password: "test",
+                      username: undefined,
+                      password: undefined,
                     }
                   }
                   validationSchema={Yup.object().shape({

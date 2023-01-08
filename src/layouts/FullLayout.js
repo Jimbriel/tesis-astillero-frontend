@@ -5,12 +5,13 @@ import Header from "./layout-components/header/Header";
 import Sidebar from "./layout-components/sidebar/Sidebar";
 import Footer from "./layout-components/footer/Footer";
 import Customizer from "./layout-components/customizer/Customizer";
-// import ThemeRoutes from "../routes/Router";
-import ThemeRoutes from "../routes/AdminRoutes";
+import RoutesMain from "../routes/Router";
+import AdminRoutes from "../routes/AdminRoutes";
 import Spinner from "./../views/spinner/Spinner";
 export default (props) => {
+  const auth = useSelector((state) => state.auth);
   const [width, setWidth] = useState(window.innerWidth);
-
+  const [ThemeRoutes, setThemeRoutes] = useState(auth.data_user?.id_perfil === 1?  AdminRoutes : RoutesMain);
   const settings = useSelector((state) => state.settings);
 
   useEffect(() => {
@@ -56,6 +57,23 @@ export default (props) => {
       window.removeEventListener("resize", updateDimensions.bind(null));
     };
   }, [settings.activeSidebarType, width]);
+
+  // useEffect(() => {
+    // console.log(auth.data_user?.id_perfil);
+    // switch (auth.data_user?.id_perfil) {
+    //   case 1:
+    //     setThemeRoutes(AdminRoutes)
+    //     break;
+    //   case 2:
+    //     setThemeRoutes(RoutesMain)
+    //     break;
+     
+    //   default:
+    //     setThemeRoutes(RoutesMain)
+    // }  
+   
+  // }, [auth])
+  
 
   return (
     <div

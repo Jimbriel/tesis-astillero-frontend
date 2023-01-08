@@ -5,6 +5,7 @@ import { lazy } from "react";
 // const Modern = lazy(() => import("../views/dashboards/Modern"));
 const MainDashboard = lazy(() => import("../views/dashboards/MainDashboard"));
 const Perfil = lazy(() => import("../mantenimientos/Perfil/Perfil"));
+const Usuario = lazy(() => import("../mantenimientos/Usuarios/Usuario"));
 
 
 var ThemeRoutes = [
@@ -42,7 +43,7 @@ var ThemeRoutes = [
     path: "/mantenimientos",
     name: "Mantenimientos",
     state: "mantenimientospages",
-    icon: "fa fa-wrench	",
+    icon: "fa fa-wrench",
     badges: "side-badge badge badge-info",
     badgeno: "3",
     child: [
@@ -52,6 +53,13 @@ var ThemeRoutes = [
         mini: "B",
         icon: "mdi mdi-adjust",
         component: Perfil,
+      },
+      {
+        path: "/mantenimientos/usuario",
+        name: "Usuario",
+        mini: "B",
+        icon: "mdi mdi-adjust",
+        component: Usuario,
       },
     ],
   },

@@ -11,11 +11,11 @@ import {
   Table,
 } from "antd";
 import { FilterOutlined, PlusCircleOutlined } from "@ant-design/icons";
-import ModalPerfil from "./ModalPerfil";
 import { MantenimientosService } from "../../jwt/_services";
 import { useEffect } from "react";
+import ModalUsuario from "./ModalUsuario";
 
-const Perfil = (props) => {
+const Usuario = (props) => {
   const searchInput = useRef(null);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -134,11 +134,21 @@ const Perfil = (props) => {
       title: () => {
         return <span className="text-primary">Nombre</span>;
       },
-      dataIndex: "descripcion",
-      key: "descripcion",
+      dataIndex: "name",
+      key: "name",
       // render: (val) => checkBox_render(val),
       align: "center",
-      ...getColumnSearchProps("descripcion", "Nombre"),
+      ...getColumnSearchProps("name", "Nombre°"),
+    },
+    {
+      title: () => {
+        return <span className="text-primary">Correo</span>;
+      },
+      dataIndex: "email",
+      key: "email",
+      // render: (val) => checkBox_render(val),
+      align: "center",
+      ...getColumnSearchProps("email", "Correo"),
     },
     {
       title: () => {
@@ -201,12 +211,12 @@ const Perfil = (props) => {
       .finally(() => {});
   };
 
-  const filtrarPerfil = useCallback((data = {}) => {
+  const filtrarUsuario = useCallback((data = {}) => {
     setLoading(true);
-    MantenimientosService.filtrarPerfil(data)
+    MantenimientosService.filtrarUsuarios(data)
       .then(
         (data) => {
-          setJsonData(data.text.perfil);
+          setJsonData(data.text.usuario);
         },
         (error) => {
           notificacion("error", "Error en Litar Perfil ", error);
@@ -220,15 +230,15 @@ const Perfil = (props) => {
 
   useEffect(() => {
     var obj = { estado: ["A", "I"] };
-    filtrarPerfil(obj);
-  }, [isModalOpen, filtrarPerfil]);
+    filtrarUsuario(obj);
+  }, [isModalOpen, filtrarUsuario]);
 
   
 
   const DataSource = JsonData?.map((prop, key) => {
     var obj = {};
     var estado = "";
-    switch (prop.estado?.trim()) {
+    switch (prop.estado.trim()) {
       case "A":
         estado = "Activo";
         break;
@@ -268,7 +278,7 @@ const Perfil = (props) => {
               obj.acciones = "";
               // setObj(obj);
               actualizarPerfil(obj);
-              filtrarPerfil();
+              filtrarUsuario();
             }}
           >
             <i className="fa fa-times" />
@@ -283,7 +293,7 @@ const Perfil = (props) => {
 
   return (
     <Card>
-      <ModalPerfil
+      <ModalUsuario
         Accion={titulo}
         isModalOpen={isModalOpen}
         obj={obj}
@@ -325,7 +335,7 @@ const Perfil = (props) => {
               hideOnSinglePage: true,
             }}
             showSizeChanger={false}
-            scroll={{ x:1200,/*  y: 300 */ }}
+            scroll={{ x: 1200 }}
           />
         </Col>
       </Row>
@@ -333,4 +343,4 @@ const Perfil = (props) => {
   );
 };
 
-export default Perfil;
+export default Usuario;
