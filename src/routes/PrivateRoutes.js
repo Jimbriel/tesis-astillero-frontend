@@ -17,10 +17,32 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
             }}
           />
         );
-      }
+      }  else {
+        if (props.location.pathname === "/") {
+          var path = "/dashboards/main";
+          //console.log(currentUser.user.id_perfil);
+          // if (parseInt(currentUser.user.id_perfil) === 34) {
+          //   //  console.log("currentUser.user.id_perfil");
+          //   // console.log(currentUser.user.id_perfil);
+          //   path = "/ecommerce/catalogo";
+          // }
+          // if (parseInt(currentUser.user.id_perfil) === 38) {
+          //   path = "/Kipit-Home";
+          // }
+          return (
+            <Redirect
+              to={{
+                //pathname: "/inicio/formularioDatos",
+                pathname: path,
+                state: { from: props.location },
+              }}
+            />
+          );
+        } else {
 
-      // authorised so return component
-      return <Component {...props} />;
+          return <Component {...props} />;
+        }
+      }
     }}
   />
 );
