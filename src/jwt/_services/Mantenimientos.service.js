@@ -9,7 +9,21 @@ export const MantenimientosService = {
   filtrarUsuarios,
   actualizarUsuario,
   crearUsuario,
+  crearContratista,
 };
+function crearContratista(data) {
+  const requestOptions = {
+    method: "post",
+    headers: AuthHeader(),
+    body: JSON.stringify(data),
+  };
+
+  return fetch(`${Url}mantenimientos/crearContratista`, requestOptions)
+    .then(HandleResponse)
+    .then((response) => {
+      return response;
+    });
+}
 function crearUsuario(data) {
   const requestOptions = {
     method: "post",

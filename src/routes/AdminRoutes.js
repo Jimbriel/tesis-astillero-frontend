@@ -5,7 +5,9 @@ import { lazy } from "react";
 // const Modern = lazy(() => import("../views/dashboards/Modern"));
 const MainDashboard = lazy(() => import("../views/dashboards/MainDashboard"));
 const Perfil = lazy(() => import("../mantenimientos/Perfil/Perfil"));
+const Obras = lazy(() => import("../mantenimientos/Obras/Obras"));
 const Usuario = lazy(() => import("../mantenimientos/Usuarios/Usuario"));
+const Empresa = lazy(() => import("../mantenimientos/Empresa/Empresa"));
 
 
 var ThemeRoutes = [
@@ -60,6 +62,20 @@ var ThemeRoutes = [
         mini: "B",
         icon: "mdi mdi-adjust",
         component: Usuario,
+      },
+      {
+        path: "/mantenimientos/empresa",
+        name: "Empresa",
+        mini: "B",
+        icon: "mdi mdi-adjust",
+        component: Empresa,
+      },
+      {
+        path: "/mantenimientos/obras",
+        name: "Obras",
+        mini: "B",
+        icon: "mdi mdi-adjust",
+        component: Obras,
       },
     ],
   },
