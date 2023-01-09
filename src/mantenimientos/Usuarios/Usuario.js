@@ -152,6 +152,15 @@ const Usuario = (props) => {
     },
     {
       title: () => {
+        return <span className="text-primary">Perfil</span>;
+      },
+      dataIndex: "perfilDescripcion",
+      key: "perfilDescripcion",
+      // render: (val) => checkBox_render(val),
+      align: "center",
+    },
+    {
+      title: () => {
         return <span className="text-primary">Estado</span>;
       },
       dataIndex: "estado_text",
@@ -180,7 +189,7 @@ const Usuario = (props) => {
       key: "acciones",
       // render: (val) => checkBox_render(val),
       align: "center",
-      fixed: 'right',
+      fixed: "right",
       width: 200,
     },
   ];
@@ -190,6 +199,7 @@ const Usuario = (props) => {
   };
 
   const closeModal = () => {
+    setObj({});
     setIsModalOpen(false);
   };
 
@@ -233,8 +243,6 @@ const Usuario = (props) => {
     filtrarUsuario(obj);
   }, [isModalOpen, filtrarUsuario]);
 
-  
-
   const DataSource = JsonData?.map((prop, key) => {
     var obj = {};
     var estado = "";
@@ -253,6 +261,7 @@ const Usuario = (props) => {
     }
     obj.estado_text = estado;
     obj.key = key + 1;
+    obj.perfilDescripcion = prop.perfil?.descripcion;
     obj.acciones = (
       <Row justify="center" gutter={[8, 8]}>
         <Col>
@@ -260,6 +269,7 @@ const Usuario = (props) => {
             type="primary"
             onClick={() => {
               let obj = DataSource.find((o) => o.key === key + 1);
+              console.log(obj);
               setObj(obj);
               setAccion("editar");
               showModal();

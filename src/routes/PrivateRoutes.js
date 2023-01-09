@@ -7,7 +7,6 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={(props) => {
-      // const auth = useSelector((state) => state.auth);
       const currentUser = AuthenticationService.currentUserValue;
       if (!currentUser) {
         // not logged in so redirect to login page with the return url
@@ -20,16 +19,23 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
           />
         );
       } else {
-        if (props.location.pathname === "/") {
-          var path = "/dashboards/main";
+        if (props.location.pathname === "/" || props.location.state === undefined) {
+          // if (
+          //   parseInt(currentUser.user?.id_perfil) === 1 &&
+          //   props.location.state === undefined
+          // ) {
           // console.log(auth.data_user?.perfil);
-          // if (parseInt(auth.data_user?.perfil) === 1) {
-          //   //  console.log("currentUser.user.id_perfil");
-          //   // console.log(currentUser.user.id_perfil);
-          //   path = "/ecommerce/catalogo";
-          // }
+          var path = "/dashboards/analytical";
+          if (parseInt(currentUser.user?.id_perfil) === 1) {
+            //  console.log("currentUser.user.id_perfil");
+            // console.log(currentUser.user.id_perfil);
+            path = "/dashboards/main";
+          }
           // if (parseInt(auth.data_user?.perfil) === 38) {
           //   path = "/Kipit-Home";
+          // }
+          // if(props.location.state === undefined){
+
           // }
           return (
             <Redirect
@@ -40,6 +46,9 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
               }}
             />
           );
+          // } else {
+          //   return <Component {...props} />;
+          // }
         } else {
           return <Component {...props} />;
         }

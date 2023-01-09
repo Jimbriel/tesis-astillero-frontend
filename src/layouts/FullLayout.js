@@ -5,13 +5,13 @@ import Header from "./layout-components/header/Header";
 import Sidebar from "./layout-components/sidebar/Sidebar";
 import Footer from "./layout-components/footer/Footer";
 import Customizer from "./layout-components/customizer/Customizer";
-// import RoutesMain from "../routes/Router";
-// import AdminRoutes from "../routes/AdminRoutes";
+import RoutesMain from "../routes/Router";
+import AdminRoutes from "../routes/AdminRoutes";
 import Spinner from "./../views/spinner/Spinner";
 export default (props) => {
   const auth = useSelector((state) => state.auth);
   const [width, setWidth] = useState(window.innerWidth);
-  // const [ThemeRoutes, setThemeRoutes] = useState(/* auth.data_user?.id_perfil === 1?  AdminRoutes : */ RoutesMain);
+  const [ThemeR, setThemeR] = useState([]);
   const settings = useSelector((state) => state.settings);
 
   useEffect(() => {
@@ -58,6 +58,26 @@ export default (props) => {
     };
   }, [settings.activeSidebarType, width]);
 
+  if (ThemeR.length === 0) {
+    if(auth.data_user?.id_perfil !== undefined || auth.data_user?.id_perfil !== null){
+      switch (auth.data_user?.id_perfil) {
+        case 1:
+          setThemeR(AdminRoutes);
+          break;
+        case 2:
+          setThemeR(RoutesMain);
+          break;
+  
+        default:
+          setThemeR(RoutesMain);
+      }
+    }else{
+      setThemeR(RoutesMain);
+
+    }
+    
+  }
+
   // useEffect(() => {
   //   console.log(auth.data_user?.id_perfil);
   //   switch (auth.data_user?.id_perfil) {
@@ -67,13 +87,12 @@ export default (props) => {
   //     case 2:
   //       setThemeRoutes(RoutesMain)
   //       break;
-     
+
   //     default:
   //       setThemeRoutes(RoutesMain)
-  //   }  
-   
+  //   }
+
   // }, [])
-  
 
   return (
     <div
@@ -93,7 +112,7 @@ export default (props) => {
       {/*--------------------------------------------------------------------------------*/}
       {/* Sidebar                                                                        */}
       {/*--------------------------------------------------------------------------------*/}
-      <Sidebar {...props} routes={auth.data_menu} />
+      <Sidebar {...props} routes={ThemeR} />
       {/*--------------------------------------------------------------------------------*/}
       {/* Page Main-Content                                                              */}
       {/*--------------------------------------------------------------------------------*/}
@@ -101,7 +120,7 @@ export default (props) => {
         <div className="page-content container-fluid">
           <Suspense fallback={<Spinner />}>
             <Switch>
-              {auth.data_menu?.map((prop, key) => {
+              {ThemeR?.map((prop, key) => {
                 if (prop.navlabel) {
                   return null;
                 } else if (prop.collapse) {

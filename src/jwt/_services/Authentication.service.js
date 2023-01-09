@@ -1,6 +1,6 @@
 import { BehaviorSubject } from "rxjs";
 
-import { HandleResponse } from "../_helpers";
+import { AuthHeader, HandleResponse } from "../_helpers";
 import { Url } from "./Url.service";
 
 const currentUserSubject = new BehaviorSubject(
@@ -9,6 +9,7 @@ const currentUserSubject = new BehaviorSubject(
 
 
 export const AuthenticationService = {
+  verificarCorreo,
   login,
   logout,
   currentUser: currentUserSubject.asObservable(),
@@ -16,6 +17,21 @@ export const AuthenticationService = {
     return currentUserSubject.value;
   },
 };
+
+function verificarCorreo(data) {
+  const requestOptions = {
+    method: "post",
+    headers: AuthHeader(),
+    body: JSON.stringify(data),
+  };
+
+
+  return fetch(`${Url}auth/verificarCorreo`, requestOptions)
+    .then(HandleResponse)
+    .then((response) => {
+      return response;
+    });
+}
 
 function login(data) {
   const requestOptions = {

@@ -1,16 +1,39 @@
+import { SaveOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Modal, notification, Row, Select } from "antd";
 import React, { useCallback, useState } from "react";
 import { useEffect } from "react";
+import { AuthenticationService } from "../../jwt/_services";
 import { MantenimientosService } from "../../jwt/_services/Mantenimientos.service";
 
 const ModalUsuario = (props) => {
-    const [ComboPerfil, setComboPerfil] = useState([])
+  const [ComboPerfil, setComboPerfil] = useState([]);
+  const [Loading, setLoading] = useState(false);
+  const [Password, setPassword] = useState("");
+  // const [Values, setValues] = useState([]);
+  const [ValidarCorreo, setValidarCorreo] = useState(false);
+  // const [form] = Form.useForm();
   // const handleOk = () => {
   //     setIsModalOpen(false);
   //   };
   //   const handleCancel = () => {
   //     setIsModalOpen(false);
   //   };
+  // const initialValues = {
+  //   name: "",
+  //   email: "",
+  //   password: "",
+  //   passwordConfirm: "",
+  //   estado: undefined,
+  //   perfil: undefined,
+  // };
+
+  // if (props.Accion === "editar"){
+
+  //   form.setFieldsValue(initialValues);
+  // }else{
+  //   form.setFieldsValue(props.obj);
+
+  // }
   const notificacion = (type, mensaje, descripcion) => {
     notification[type]({
       message: mensaje,
@@ -18,10 +41,11 @@ const ModalUsuario = (props) => {
     });
   };
   const onFinish = (values) => {
-    var obj ={...values, id: props.obj.id}
-    console.log("Success:", obj);
-    if(props.Accion === "editar" ){
-        MantenimientosService.actualizarUsuario(obj)
+    setLoading(true);
+    console.log("Success:", values);
+    if (props.Accion === "editar") {
+      var obj = { ...values, id: props.obj.id };
+      MantenimientosService.actualizarUsuario(obj)
         .then(
           (data) => {
             console.log(data);
@@ -37,27 +61,30 @@ const ModalUsuario = (props) => {
             console.log(error);
           }
         )
-        .finally(() => {});
-
-    }/* else { */
-    //     MantenimientosService.crearPerfil(values)
-    //     .then(
-    //       (data) => {
-    //         props.toggle();
-    //         notificacion(
-    //           "success",
-    //           "Perfil Creado Exitosamente ",
-    //           data.text.perfil.descripcion
-    //         );
-    //       },
-    //       (error) => {
-    //         notificacion("error", "Error en Crear Perfil ", error);
-    //         console.log(error);
-    //       }
-    //     )
-    //     .finally(() => {});
-    // }
- 
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      MantenimientosService.crearUsuario(values)
+        .then(
+          (data) => {
+            props.toggle();
+            notificacion(
+              "success",
+              "Usuario Creado Exitosamente ",
+              data.text.usuario?.name
+            );
+          },
+          (error) => {
+            notificacion("error", "Error en Crear Perfil ", error);
+            console.log(error);
+          }
+        )
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+    setLoading(false);
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -68,7 +95,7 @@ const ModalUsuario = (props) => {
     MantenimientosService.filtrarPerfil(data)
       .then(
         (data) => {
-            console.log(data.text);
+          console.log(data.text);
           setComboPerfil(data.text.perfil);
         },
         (error) => {
@@ -81,6 +108,36 @@ const ModalUsuario = (props) => {
       });
   }, []);
 
+  const VerificarCorreo = (data) => {
+    setLoading(true);
+    // var data = form.getFieldValue("email");
+    console.log(data);
+    if (data /* && props.Accion === "editar" */) {
+      AuthenticationService.verificarCorreo({ correo: data })
+        .then(
+          (data) => {
+            console.log(data.text);
+            setValidarCorreo(data.text.usuario);
+            // setComboPerfil(data.text.perfil);
+          },
+          (error) => {
+            notificacion("error", "Error en Litar Perfil ", error);
+            console.log(error);
+          }
+        )
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      setValidarCorreo(false);
+    }
+  };
+
+  const handleCancel = () => {
+    props.toggle();
+    setValidarCorreo(false);
+  };
+
   useEffect(() => {
     filtrarPerfil();
   }, [filtrarPerfil]);
@@ -92,7 +149,7 @@ const ModalUsuario = (props) => {
       //   onOk={handleOk}
       closable={true}
       maskClosable={true}
-      onCancel={props.toggle}
+      onCancel={() => handleCancel()}
       blur={true}
       destroyOnClose={true}
     >
@@ -104,15 +161,11 @@ const ModalUsuario = (props) => {
         wrapperCol={{
           span: 16,
         }}
-        initialValues={{
-          name: props.obj?.name,
-          estado: props.obj?.estado?.trim(),
-          email: props.obj?.email,
-          id_perfil: props.obj?.id_perfil,
-        }}
+        initialValues={props.obj}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
+        // form={form}
       >
         <Form.Item
           label="Nombre"
@@ -129,16 +182,74 @@ const ModalUsuario = (props) => {
         <Form.Item
           label="Correo"
           name="email"
+          validateTrigger="onBlur"
           rules={[
+            {
+              type: "email",
+              message: "Por favor ingrese un correo valido",
+            },
             {
               required: true,
               message: "Por favor ingrese un correo!",
             },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                VerificarCorreo(value);
+                if (!ValidarCorreo) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error("Correo ya existe"));
+              },
+            }),
           ]}
         >
           <Input />
         </Form.Item>
-        <Form.Item name="id_perfil" label="Perfil"
+        <Form.Item
+          name="password"
+          label="Contraseña"
+          validateTrigger="onBlur"
+          rules={[
+            {
+              min: 8,
+              message: "La contraseña debe tener más de 7 caracteres",
+            },
+            {
+              required: true,
+              message: "Por favor ingrese una Contraseña!",
+            },
+          ]}
+          hasFeedback
+        >
+          <Input.Password onChange={(x) => setPassword(x.target.value)} />
+        </Form.Item>
+        {Password.length > 0 && (
+          <Form.Item
+            name="confirm"
+            label="Confirmar Contraseña"
+            dependencies={["password"]}
+            validateTrigger="onBlur"
+            hasFeedback
+            rules={[
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error("Las contraseñas  no coinciden")
+                  );
+                },
+              }),
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+        )}
+
+        <Form.Item
+          name="id_perfil"
+          label="Perfil"
           rules={[
             {
               required: true,
@@ -146,9 +257,11 @@ const ModalUsuario = (props) => {
             },
           ]}
         >
-            <Select options={ComboPerfil} placeholder="Seleccionar Perfil">
-            </Select>
-          </Form.Item>
+          <Select
+            options={ComboPerfil}
+            placeholder="Seleccionar Perfil"
+          ></Select>
+        </Form.Item>
         {props.Accion === "editar" ? (
           <Form.Item name="estado" label="Estado">
             <Select>
@@ -159,7 +272,13 @@ const ModalUsuario = (props) => {
         ) : null}
         <Row justify="end">
           <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <Button
+              disabled={Loading}
+              loading={Loading}
+              icon={<SaveOutlined />}
+              type="primary"
+              htmlType="submit"
+            >
               Guardar
             </Button>
           </Form.Item>
