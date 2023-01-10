@@ -7,10 +7,38 @@ export const MantenimientosService = {
   actualizarPerfil,
 
   filtrarUsuarios,
+  filtrarContratista,
   actualizarUsuario,
   crearUsuario,
   crearContratista,
+  actualizarContratista,
 };
+function actualizarContratista(data) {
+  const requestOptions = {
+    method: "post",
+    headers: AuthHeader(),
+    body: JSON.stringify(data),
+  };
+
+  return fetch(`${Url}mantenimientos/actualizarContratista`, requestOptions)
+    .then(HandleResponse)
+    .then((response) => {
+      return response;
+    });
+}
+function filtrarContratista(data) {
+  const requestOptions = {
+    method: "post",
+    headers: AuthHeader(),
+    body: JSON.stringify(data),
+  };
+
+  return fetch(`${Url}mantenimientos/filtrarContratista`, requestOptions)
+    .then(HandleResponse)
+    .then((response) => {
+      return response;
+    });
+}
 function crearContratista(data) {
   const requestOptions = {
     method: "post",

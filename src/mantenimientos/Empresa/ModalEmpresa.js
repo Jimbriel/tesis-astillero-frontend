@@ -1,8 +1,9 @@
 import { Button, Form, Input, Modal, notification, Row, Select } from "antd";
-import React, {/*  useRef, useState  */} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { MantenimientosService } from "../../jwt/_services/Mantenimientos.service";
 
 const ModalEmpresa = (props) => {
+  const [ComboUsuarios, setComboUsuarios] = useState([])
   // const handleOk = () => {
   //     setIsModalOpen(false);
   //   };
@@ -17,38 +18,39 @@ const ModalEmpresa = (props) => {
   };
   const onFinish = (values) => {
     console.log("Success:", values);
+
     if(props.Accion === "editar" ){
-        var obj ={...values, id_perfil: props.obj.id_perfil}
-        MantenimientosService.actualizarPerfil(obj)
+        var obj ={...values, id: props.obj.id}
+        MantenimientosService.actualizarContratista(obj)
         .then(
           (data) => {
             props.toggle();
             notificacion(
               "success",
-              "Perfil Actualizado Exitosamente ",
-              data.text.perfil.descripcion
+              "Contratista Actualizado Exitosamente ",
+              data.text.contratista.razon_social
             );
           },
           (error) => {
-            notificacion("error", "Error en Crear Perfil ", error);
+            notificacion("error", "Error en Actualizar Contratista ", error);
             console.log(error);
           }
         )
         .finally(() => {});
 
     }else {
-        MantenimientosService.crearPerfil(values)
+        MantenimientosService.crearContratista(values)
         .then(
           (data) => {
             props.toggle();
             notificacion(
               "success",
-              "Perfil Creado Exitosamente ",
-              data.text.perfil.descripcion
+              "Contratista Creado Exitosamente ",
+              data.text.contratista.razon_social
             );
           },
           (error) => {
-            notificacion("error", "Error en Crear Perfil ", error);
+            notificacion("error", "Error en Crear Contratista ", error);
             console.log(error);
           }
         )
@@ -59,9 +61,30 @@ const ModalEmpresa = (props) => {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+  const filtrarUsuario = useCallback((data = {}) => {
+    // setLoading(true);
+    MantenimientosService.filtrarUsuarios(data)
+      .then(
+        (data) => {
+          setComboUsuarios(data.text.usuario);
+        },
+        (error) => {
+          notificacion("error", "Error en Listar Usuario ", error);
+          console.log(error);
+        }
+      )
+      .finally(() => {
+        // setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    var obj = {id_perfil:2 }
+    filtrarUsuario(obj);
+  }, [filtrarUsuario]);
   return (
     <Modal
-      title={props.Accion === "editar" ? "Editar Perfil" : "Nuevo Perfil"}
+      title={props.Accion === "editar" ? "Editar Empresa" : "Nueva Empresa"}
       open={props.isModalOpen}
       footer={null}
       //   onOk={handleOk}
@@ -87,10 +110,15 @@ const ModalEmpresa = (props) => {
         <Form.Item
           label="Ruc"
           name="ruc"
+          validateTrigger="onBlur"
           rules={[
             {
               required: true,
               message: "Por favor ingrese un ruc!",
+            },
+            {
+              min:13,
+              message: "el ruc debe tener 13 digitos!",
             },
           ]}
         >
@@ -108,6 +136,29 @@ const ModalEmpresa = (props) => {
         >
           <Input />
         </Form.Item>
+        <Form.Item
+          name="user_id"
+          label="Representante"
+          rules={[
+            {
+              required: true,
+              message: "Por favor seleccione un Represente!",
+            },
+          ]}
+        >
+          <Select
+            options={ComboUsuarios}
+            placeholder="Seleccionar Representante"
+          ></Select>
+        </Form.Item>
+        <Form.Item name="tipo_contratista" label="Tipo Contratista">
+            <Select placeholder="Seleccione un tipo de contratista">
+              <Select.Option value="1">Tipo 1</Select.Option>
+              <Select.Option value="2">Tipo 2</Select.Option>
+              <Select.Option value="3">Tipo 3</Select.Option>
+              <Select.Option value="4">Tipo 4</Select.Option>
+            </Select>
+          </Form.Item>
         {props.Accion === "editar" ? (
           <Form.Item name="estado" label="Estado">
             <Select>

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   Button,
   Card,
@@ -145,8 +145,8 @@ const Empresa = (props) => {
       title: () => {
         return <span className="text-primary">Tipo de Contratista</span>;
       },
-      dataIndex: "tipo_contratista",
-      key: "tipo_contratista",
+      dataIndex: "tipoContratista",
+      key: "tipoContratista",
       // render: (val) => checkBox_render(val),
       align: "center",
     },
@@ -202,30 +202,30 @@ const Empresa = (props) => {
     setIsModalOpen(false);
   };
 
-  const actualizarPerfil = (data) => {
-    MantenimientosService.actualizarPerfil(data)
+  const actualizarContratista = (data) => {
+    MantenimientosService.actualizarContratista(data)
       .then(
         (data) => {
           notificacion(
             "success",
-            "Perfil Actualizado Exitosamente ",
-            data.text.perfil.descripcion
+            "Contratista Actualizado Exitosamente",
+            data.text.contratista.razon_social
           );
         },
         (error) => {
-          notificacion("error", "Error en Crear Perfil ", error);
+          notificacion("error", "Error en Actualizar Contratista ", error);
           console.log(error);
         }
       )
       .finally(() => {});
   };
 
-  const filtrarPerfil = useCallback((data = {}) => {
+  const filtrarContratista = useCallback((data = {}) => {
     setLoading(true);
-    MantenimientosService.filtrarPerfil(data)
+    MantenimientosService.filtrarContratista(data)
       .then(
         (data) => {
-          setJsonData(data.text.perfil);
+          setJsonData(data.text.contratistas);
         },
         (error) => {
           notificacion("error", "Error en Litar Perfil ", error);
@@ -237,10 +237,10 @@ const Empresa = (props) => {
       });
   }, []);
 
-  //   useEffect(() => {
-  //     var obj = { estado: ["A", "I"] };
-  //     filtrarPerfil(obj);
-  //   }, [isModalOpen, filtrarPerfil]);
+    useEffect(() => {
+      var obj = { estado: ["A", "I"] };
+      filtrarContratista(obj);
+    }, [isModalOpen, filtrarContratista]);
 
   const DataSource = JsonData?.map((prop, key) => {
     var obj = {};
@@ -258,6 +258,8 @@ const Empresa = (props) => {
       default:
         estado = "";
     }
+    obj.tipoContratista =<span> {"Tipo " + prop.tipo_contratista}</span>
+    obj.representante = prop.users.name;
     obj.estado_text = estado;
     obj.key = key + 1;
     obj.acciones = (
@@ -283,9 +285,10 @@ const Empresa = (props) => {
               let obj = DataSource.find((o) => o.key === key + 1);
               obj.estado = "E";
               obj.acciones = "";
+              obj.tipoContratista = "";
               // setObj(obj);
-              actualizarPerfil(obj);
-              filtrarPerfil();
+              actualizarContratista(obj);
+              filtrarContratista();
             }}
           >
             <i className="fa fa-times" />
