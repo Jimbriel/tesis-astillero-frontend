@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   Button,
   Card,
@@ -12,7 +12,6 @@ import {
 } from "antd";
 import { FilterOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { MantenimientosService } from "../../jwt/_services";
-// import { useEffect } from "react";
 import ModalObras from "./ModalObras";
 
 const Obras = (props) => {
@@ -132,13 +131,50 @@ const Obras = (props) => {
 
     {
       title: () => {
-        return <span className="text-primary">Nombre</span>;
+        return <span className="text-primary">Proyecto</span>;
       },
-      dataIndex: "descripcion",
-      key: "descripcion",
+      dataIndex: "nombre_proyecto",
+      key: "nombre_proyecto",
       // render: (val) => checkBox_render(val),
       align: "center",
-      ...getColumnSearchProps("descripcion", "Nombre"),
+      ...getColumnSearchProps("nombre_proyecto", "Proyecto"),
+    },
+    {
+      title: () => {
+        return <span className="text-primary">Ubicación</span>;
+      },
+      dataIndex: "lugar",
+      key: "lugar",
+      // render: (val) => checkBox_render(val),
+      align: "center",
+      ...getColumnSearchProps("lugar", "Ubicación"),
+    },
+    {
+      title: () => {
+        return <span className="text-primary">Actividades</span>;
+      },
+      dataIndex: "actividades",
+      key: "actividades",
+      // render: (val) => checkBox_render(val),
+      align: "center",
+    },
+    {
+      title: () => {
+        return <span className="text-primary">Horarios</span>;
+      },
+      dataIndex: "jornada",
+      key: "jornada",
+      // render: (val) => checkBox_render(val),
+      align: "center",
+    },
+    {
+      title: () => {
+        return <span className="text-primary">Periodo</span>;
+      },
+      dataIndex: "periodo",
+      key: "periodo",
+      // render: (val) => checkBox_render(val),
+      align: "center",
     },
     {
       title: () => {
@@ -170,7 +206,7 @@ const Obras = (props) => {
       key: "acciones",
       // render: (val) => checkBox_render(val),
       align: "center",
-      fixed: 'right',
+      fixed: "right",
       width: 200,
     },
   ];
@@ -201,12 +237,12 @@ const Obras = (props) => {
       .finally(() => {});
   };
 
-  const filtrarPerfil = useCallback((data = {}) => {
+  const filtrarObras = useCallback((data = {}) => {
     setLoading(true);
-    MantenimientosService.filtrarPerfil(data)
+    MantenimientosService.filtrarObras(data)
       .then(
         (data) => {
-          setJsonData(data.text.perfil);
+          setJsonData(data.text.obra);
         },
         (error) => {
           notificacion("error", "Error en Litar Perfil ", error);
@@ -218,12 +254,10 @@ const Obras = (props) => {
       });
   }, []);
 
-//   useEffect(() => {
-//     var obj = { estado: ["A", "I"] };
-//     filtrarPerfil(obj);
-//   }, [isModalOpen, filtrarPerfil]);
-
-  
+  useEffect(() => {
+    var obj = { estado: ["A", "I"] };
+    filtrarObras(obj);
+  }, [isModalOpen, filtrarObras]);
 
   const DataSource = JsonData?.map((prop, key) => {
     var obj = {};
@@ -241,6 +275,15 @@ const Obras = (props) => {
       default:
         estado = "";
     }
+    obj.jornada = (
+      <div>
+        {prop.matutino === "V" && <div>{"matutino "}</div>}
+        {prop.vespertino === "V" && <div>{"vespertino "}</div>}
+        {prop.nocturno === "V" && <div>{"nocturno "}</div>}
+      </div>
+    );
+    prop.periodo = <div>{prop.fecha_inicio + " / " + prop.fecha_fin}</div>
+    obj.actividad = prop.actividades?.split(',')
     obj.estado_text = estado;
     obj.key = key + 1;
     obj.acciones = (
@@ -268,7 +311,7 @@ const Obras = (props) => {
               obj.acciones = "";
               // setObj(obj);
               actualizarPerfil(obj);
-              filtrarPerfil();
+              filtrarObras();
             }}
           >
             <i className="fa fa-times" />
@@ -325,7 +368,7 @@ const Obras = (props) => {
               hideOnSinglePage: true,
             }}
             showSizeChanger={false}
-            scroll={{ x:1200,/*  y: 300 */ }}
+            scroll={{ x: 1200 /*  y: 300 */ }}
           />
         </Col>
       </Row>

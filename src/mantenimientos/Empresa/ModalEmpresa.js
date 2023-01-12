@@ -79,7 +79,7 @@ const ModalEmpresa = (props) => {
   }, []);
 
   useEffect(() => {
-    var obj = {id_perfil:2 }
+    var obj = {id_perfil:3 }
     filtrarUsuario(obj);
   }, [filtrarUsuario]);
   return (

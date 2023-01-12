@@ -1,8 +1,10 @@
-import { Button, Form, Input, Modal, notification, Row, Select } from "antd";
-import React, {/*  useRef, useState  */} from "react";
+import { Button, Form, Input, Modal, notification, Row, Select, DatePicker } from "antd";
+import React, { useCallback, useEffect, useState } /*  useRef, useState  */ from "react";
 import { MantenimientosService } from "../../jwt/_services/Mantenimientos.service";
-
+const { RangePicker } = DatePicker;
+const { Option } = Select;
 const ModalObras = (props) => {
+  const [ComboContratista, setComboContratista] = useState([])
   // const handleOk = () => {
   //     setIsModalOpen(false);
   //   };
@@ -17,48 +19,68 @@ const ModalObras = (props) => {
   };
   const onFinish = (values) => {
     console.log("Success:", values);
-    if(props.Accion === "editar" ){
-        var obj ={...values, id_perfil: props.obj.id_perfil}
-        MantenimientosService.actualizarPerfil(obj)
+    // if (props.Accion === "editar") {
+    //   var obj = { ...values, id_perfil: props.obj.id_perfil };
+    //   MantenimientosService.actualizarPerfil(obj)
+    //     .then(
+    //       (data) => {
+    //         props.toggle();
+    //         notificacion(
+    //           "success",
+    //           "Perfil Actualizado Exitosamente ",
+    //           data.text.perfil.descripcion
+    //         );
+    //       },
+    //       (error) => {
+    //         notificacion("error", "Error en Crear Perfil ", error);
+    //         console.log(error);
+    //       }
+    //     )
+    //     .finally(() => {});
+    // } else {
+      MantenimientosService.crearObra(values)
         .then(
           (data) => {
             props.toggle();
             notificacion(
               "success",
-              "Perfil Actualizado Exitosamente ",
-              data.text.perfil.descripcion
+              "Obra Creada Exitosamente ",
+              data.text.obra.nombre_proyecto
             );
           },
           (error) => {
-            notificacion("error", "Error en Crear Perfil ", error);
+            notificacion("error", "Error en Crear Obra ", error);
             console.log(error);
           }
         )
         .finally(() => {});
-
-    }else {
-        MantenimientosService.crearPerfil(values)
-        .then(
-          (data) => {
-            props.toggle();
-            notificacion(
-              "success",
-              "Perfil Creado Exitosamente ",
-              data.text.perfil.descripcion
-            );
-          },
-          (error) => {
-            notificacion("error", "Error en Crear Perfil ", error);
-            console.log(error);
-          }
-        )
-        .finally(() => {});
-    }
- 
+    // }
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
+  const filtrarContratista = useCallback((data = {}) => {
+    // setLoading(true);
+    MantenimientosService.filtrarContratista(data)
+      .then(
+        (data) => {
+          setComboContratista(data.text.contratistas);
+        },
+        (error) => {
+          notificacion("error", "Error en Listar Usuario ", error);
+          console.log(error);
+        }
+      )
+      .finally(() => {
+        // setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    filtrarContratista();
+  }, [filtrarContratista]);
+
   return (
     <Modal
       title={props.Accion === "editar" ? "Editar Perfil" : "Nuevo Perfil"}
@@ -79,25 +101,81 @@ const ModalObras = (props) => {
         wrapperCol={{
           span: 16,
         }}
-        initialValues={{
-          descripcion: props.obj?.descripcion,
-          estado: props.obj?.estado?.trim(),
-        }}
+        initialValues={{...props.obj, actividades:props.actividad }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <Form.Item
-          label="Descripción"
-          name="descripcion"
+          label="Nombre del Proyecto"
+          name="nombre_proyecto"
+          validateTrigger={"onBlur"}
           rules={[
             {
               required: true,
-              message: "Por favor ingrese un perfil!",
+              message: "Por favor ingrese un Nombre!",
             },
           ]}
         >
           <Input />
+        </Form.Item>
+        <Form.Item
+          name="contratista_id"
+          label="Empresa"
+          rules={[
+            {
+              required: true,
+              message: "Por favor seleccione Empresa!",
+            },
+          ]}
+        >
+          <Select
+            options={ComboContratista}
+            placeholder="Seleccionar Empresa"
+          ></Select>
+        </Form.Item>
+        <Form.Item
+          name="actividades"
+          label="Actividades"
+         
+        >
+          <Select mode="multiple" placeholder="Actividades a realizar">
+            <Option value="soldadura">soldadura</Option>
+            <Option value="izaje">izaje</Option>
+            <Option value="esmerilado">esmerilado</Option>
+            <Option value="hidroblasting">hidroblasting</Option>
+            <Option value="altura">altura</Option>
+            <Option value="confinado">confinado</Option>
+            <Option value="inmersion">inmersion</Option>
+            <Option value="granallado">granallado</Option>
+            <Option value="pintura">pintura</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item
+          name="jornada"
+          label="Jornada"
+         
+        >
+          <Select mode="multiple" placeholder="Jornada de trabajo">
+            <Option value="matutino">matutino</Option>
+            <Option value="vespertino">vespertino</Option>
+            <Option value="nocturno">nocturno</Option>
+          </Select>
+        </Form.Item>
+
+        <Form.Item label="Lugar de Trabajo" name="lugar">
+          <Input />
+        </Form.Item>
+        <Form.Item label="Duracion del Proyecto" name="periodo">
+          <RangePicker
+            // allowClear
+            style={{ width: "100%" }}
+            placeholder={["Fecha desde:", "Fecha hasta:"]}
+            format="DD/MM/YYYY"
+            onChange={(x) => {
+              console.log(x);
+            }}
+          />
         </Form.Item>
         {props.Accion === "editar" ? (
           <Form.Item name="estado" label="Estado">

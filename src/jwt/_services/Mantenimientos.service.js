@@ -12,7 +12,36 @@ export const MantenimientosService = {
   crearUsuario,
   crearContratista,
   actualizarContratista,
+  filtrarObras,
+  crearObra,
+
 };
+function crearObra(data) {
+  const requestOptions = {
+    method: "post",
+    headers: AuthHeader(),
+    body: JSON.stringify(data),
+  };
+
+  return fetch(`${Url}mantenimientos/crearObra`, requestOptions)
+    .then(HandleResponse)
+    .then((response) => {
+      return response;
+    });
+}
+function filtrarObras(data) {
+  const requestOptions = {
+    method: "post",
+    headers: AuthHeader(),
+    body: JSON.stringify(data),
+  };
+
+  return fetch(`${Url}mantenimientos/filtrarObras`, requestOptions)
+    .then(HandleResponse)
+    .then((response) => {
+      return response;
+    });
+}
 function actualizarContratista(data) {
   const requestOptions = {
     method: "post",
