@@ -14,8 +14,21 @@ export const MantenimientosService = {
   actualizarContratista,
   filtrarObras,
   crearObra,
-
+  actualizarObra,
 };
+function actualizarObra(data) {
+  const requestOptions = {
+    method: "post",
+    headers: AuthHeader(),
+    body: JSON.stringify(data),
+  };
+
+  return fetch(`${Url}mantenimientos/actualizarObra`, requestOptions)
+    .then(HandleResponse)
+    .then((response) => {
+      return response;
+    });
+}
 function crearObra(data) {
   const requestOptions = {
     method: "post",

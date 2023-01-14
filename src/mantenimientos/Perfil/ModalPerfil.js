@@ -1,8 +1,11 @@
 import { Button, Form, Input, Modal, notification, Row, Select } from "antd";
-import React, {/*  useRef, useState  */} from "react";
+import React/* , { useState } */ from "react";
 import { MantenimientosService } from "../../jwt/_services/Mantenimientos.service";
 
 const ModalPerfil = (props) => {
+  // const [ Error, setError] = useState(true)
+  // const [Descripcion, setDescripcion] = useState("")
+  // const [Justify, setJustify] = useState("end")
   // const handleOk = () => {
   //     setIsModalOpen(false);
   //   };
@@ -56,9 +59,22 @@ const ModalPerfil = (props) => {
     }
  
   };
+
+  // useEffect(() => {
+  //  Descripcion.length > 0 ? setError(true) : setError(false) 
+  // }, [Descripcion, Error])
+  
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
+  // const fail = () => {
+  //   if(Descripcion.length === 0){
+  //     Error === true ? setJustify("end"): setJustify("start");
+
+  //   }
+  //   setError(!Error);
+  // };
   return (
     <Modal
       title={props.Accion === "editar" ? "Editar Perfil" : "Nuevo Perfil"}
@@ -96,6 +112,7 @@ const ModalPerfil = (props) => {
               message: "Por favor ingrese un perfil!",
             },
           ]}
+          // onChange = {(e) => setDescripcion(e.target.value) }
         >
           <Input />
         </Form.Item>
@@ -107,9 +124,9 @@ const ModalPerfil = (props) => {
             </Select>
           </Form.Item>
         ) : null}
-        <Row justify="end">
+        <Row justify={"end"}>
           <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit"/*  onMouseEnter={()=> fail() } */ /* onMouseLeave={()=>fail()} */>
               Guardar
             </Button>
           </Form.Item>

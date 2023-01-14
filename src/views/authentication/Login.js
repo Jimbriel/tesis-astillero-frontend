@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   InputGroup,
   InputGroupAddon,
@@ -28,6 +28,8 @@ const sidebarBackground = {
 
 const Login = (props) => {
   const dispatch = useDispatch();
+  const [mostrarErrorUser, setMostrarErrorUser] = useState("");
+
   // const handleClick = () => {
   //   var elem = document.getElementById("loginform");
   //   elem.style.transition = "all 2s ease-in-out";
@@ -94,12 +96,21 @@ const Login = (props) => {
                       },
                       (error) => {
                         setSubmitting(false);
+                        setMostrarErrorUser(error);
                         setStatus(error);
                       }
                     );
                   }}
                   render={({ errors, status, touched, isSubmitting }) => (
                     <Form className="mt-3" id="loginform">
+                        {mostrarErrorUser !== "" && (
+                          <div
+                            id="error_username"
+                            className={"alert alert-danger"}
+                          >
+                            {mostrarErrorUser}
+                          </div>
+                        )}
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
                           <InputGroupText>

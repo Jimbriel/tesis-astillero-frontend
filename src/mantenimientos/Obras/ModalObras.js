@@ -1,10 +1,25 @@
-import { Button, Form, Input, Modal, notification, Row, Select, DatePicker } from "antd";
-import React, { useCallback, useEffect, useState } /*  useRef, useState  */ from "react";
+import {
+  Button,
+  Form,
+  Input,
+  Modal,
+  notification,
+  Row,
+  Select,
+  DatePicker,
+} from "antd";
+// import dayjs from "dayjs";
+import React, {
+  useCallback,
+  useEffect,
+  useState /*  useRef, useState  */,
+} from "react";
 import { MantenimientosService } from "../../jwt/_services/Mantenimientos.service";
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 const ModalObras = (props) => {
-  const [ComboContratista, setComboContratista] = useState([])
+  const [ComboContratista, setComboContratista] = useState([]);
+  // const [InitialValues, setInitialValues] = useState({});
   // const handleOk = () => {
   //     setIsModalOpen(false);
   //   };
@@ -19,32 +34,15 @@ const ModalObras = (props) => {
   };
   const onFinish = (values) => {
     console.log("Success:", values);
-    // if (props.Accion === "editar") {
-    //   var obj = { ...values, id_perfil: props.obj.id_perfil };
-    //   MantenimientosService.actualizarPerfil(obj)
-    //     .then(
-    //       (data) => {
-    //         props.toggle();
-    //         notificacion(
-    //           "success",
-    //           "Perfil Actualizado Exitosamente ",
-    //           data.text.perfil.descripcion
-    //         );
-    //       },
-    //       (error) => {
-    //         notificacion("error", "Error en Crear Perfil ", error);
-    //         console.log(error);
-    //       }
-    //     )
-    //     .finally(() => {});
-    // } else {
-      MantenimientosService.crearObra(values)
+    if (props.Accion === "editar") {
+      var obj = { ...values, id: props.obj.id };
+      MantenimientosService.actualizarObra(obj)
         .then(
           (data) => {
             props.toggle();
             notificacion(
               "success",
-              "Obra Creada Exitosamente ",
+              "Obra Actualizada Exitosamente ",
               data.text.obra.nombre_proyecto
             );
           },
@@ -54,7 +52,24 @@ const ModalObras = (props) => {
           }
         )
         .finally(() => {});
-    // }
+    } else {
+    MantenimientosService.crearObra(values)
+      .then(
+        (data) => {
+          props.toggle();
+          notificacion(
+            "success",
+            "Obra Creada Exitosamente ",
+            data.text.obra.nombre_proyecto
+          );
+        },
+        (error) => {
+          notificacion("error", "Error en Crear Obra ", error);
+          console.log(error);
+        }
+      )
+      .finally(() => {});
+    }
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -81,9 +96,25 @@ const ModalObras = (props) => {
     filtrarContratista();
   }, [filtrarContratista]);
 
+  // useEffect(() => {
+  //   // props.isModalOpen === true /* && props.actividad !== undefined   */ &&
+  //   if(props.isModalOpen === true){
+  //     // var jornada = props.obj?.jornadas.filter(jornada => jornada !== false)
+  //     console.log(props.obj.periodos);
+  //       setInitialValues({
+  //         ...props.obj,
+  //         actividades: props.obj.actividad,
+  //         jornada: props.obj.jornadas,
+  //         periodo: props.obj.periodos,
+
+  //       });
+  //   }
+    
+  // }, [props.isModalOpen]);
+
   return (
     <Modal
-      title={props.Accion === "editar" ? "Editar Perfil" : "Nuevo Perfil"}
+      title={props.Accion === "editar" ? "Editar Obra" : "Nueva Obra"}
       open={props.isModalOpen}
       footer={null}
       //   onOk={handleOk}
@@ -101,7 +132,14 @@ const ModalObras = (props) => {
         wrapperCol={{
           span: 16,
         }}
-        initialValues={{...props.obj, actividades:props.actividad }}
+        initialValues={{
+          ...props.obj,
+          actividades: props.obj.actividad,
+          jornada: props.obj.jornadas,
+          periodo: props.obj.periodos,
+
+        }}
+        // initialValues={InitialValues}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
@@ -134,11 +172,7 @@ const ModalObras = (props) => {
             placeholder="Seleccionar Empresa"
           ></Select>
         </Form.Item>
-        <Form.Item
-          name="actividades"
-          label="Actividades"
-         
-        >
+        <Form.Item name="actividades" label="Actividades">
           <Select mode="multiple" placeholder="Actividades a realizar">
             <Option value="soldadura">soldadura</Option>
             <Option value="izaje">izaje</Option>
@@ -151,11 +185,7 @@ const ModalObras = (props) => {
             <Option value="pintura">pintura</Option>
           </Select>
         </Form.Item>
-        <Form.Item
-          name="jornada"
-          label="Jornada"
-         
-        >
+        <Form.Item name="jornada" label="Jornada">
           <Select mode="multiple" placeholder="Jornada de trabajo">
             <Option value="matutino">matutino</Option>
             <Option value="vespertino">vespertino</Option>
@@ -166,12 +196,17 @@ const ModalObras = (props) => {
         <Form.Item label="Lugar de Trabajo" name="lugar">
           <Input />
         </Form.Item>
-        <Form.Item label="Duracion del Proyecto" name="periodo">
+        <Form.Item label="Duracion del Proyecto" name="periodo"   rules={[
+            {
+              required: true,
+              message: "Por favor seleccione periodo de trabajo",
+            },
+          ]}>
           <RangePicker
             // allowClear
             style={{ width: "100%" }}
             placeholder={["Fecha desde:", "Fecha hasta:"]}
-            format="DD/MM/YYYY"
+            format="YYYY/MM/DD"
             onChange={(x) => {
               console.log(x);
             }}

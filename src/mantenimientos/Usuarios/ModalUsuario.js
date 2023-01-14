@@ -109,10 +109,10 @@ const ModalUsuario = (props) => {
   }, []);
 
   const VerificarCorreo = (data) => {
-    setLoading(true);
     // var data = form.getFieldValue("email");
     console.log(data);
-    if (data /* && props.Accion === "editar" */) {
+    if (data && props.Accion !== "editar") {
+      setLoading(true);
       AuthenticationService.verificarCorreo({ correo: data })
         .then(
           (data) => {
@@ -215,7 +215,7 @@ const ModalUsuario = (props) => {
               message: "La contraseña debe tener más de 7 caracteres",
             },
             {
-              required: true,
+              required: props.Accion !== "editar"  ? true : false,
               message: "Por favor ingrese una Contraseña!",
             },
           ]}

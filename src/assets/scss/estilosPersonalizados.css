@@ -17,3 +17,6 @@ a {
     color: inherit;
   }
   
+.ant-picker-clear{
+  background-color: white !important;
+}  

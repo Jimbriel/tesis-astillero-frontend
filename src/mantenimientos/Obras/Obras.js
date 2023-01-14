@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { /* useCallback, */ useEffect, useRef, useState } from "react";
 import {
   Button,
   Card,
@@ -13,8 +13,14 @@ import {
 import { FilterOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { MantenimientosService } from "../../jwt/_services";
 import ModalObras from "./ModalObras";
+import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+import { aggObras } from "../../redux/obras/ObrasDucks";
 
 const Obras = (props) => {
+  const dispatch = useDispatch();
+  const obras = useSelector((store) => store.obras.data);
+  const obrasFetching = useSelector((store) => store.obras.isfetching);
   const searchInput = useRef(null);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -110,12 +116,12 @@ const Obras = (props) => {
     },
     render: (text) => text,
   });
-  const [JsonData, setJsonData] = useState([]);
+  // const [JsonData, setJsonData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [titulo, setAccion] = useState("editar");
 
   const [obj, setObj] = useState({});
-  const [Loading, setLoading] = useState(false);
+  // const [Loading, setLoading] = useState(false);
   const columns = [
     {
       title: () => {
@@ -219,47 +225,48 @@ const Obras = (props) => {
     setIsModalOpen(false);
   };
 
-  const actualizarPerfil = (data) => {
-    MantenimientosService.actualizarPerfil(data)
-      .then(
-        (data) => {
-          notificacion(
-            "success",
-            "Perfil Actualizado Exitosamente ",
-            data.text.perfil.descripcion
-          );
-        },
-        (error) => {
-          notificacion("error", "Error en Crear Perfil ", error);
-          console.log(error);
-        }
-      )
-      .finally(() => {});
+  const actualizarObra = (data) => {
+    MantenimientosService.actualizarObra(data)
+        .then(
+          (data) => {
+            notificacion(
+              "success",
+              "Obra Actualizada Exitosamente ",
+              data.text.obra.nombre_proyecto
+            );
+          },
+          (error) => {
+            notificacion("error", "Error en Crear Obra ", error);
+            console.log(error);
+          }
+        )
+        .finally(() => {});
   };
 
-  const filtrarObras = useCallback((data = {}) => {
-    setLoading(true);
-    MantenimientosService.filtrarObras(data)
-      .then(
-        (data) => {
-          setJsonData(data.text.obra);
-        },
-        (error) => {
-          notificacion("error", "Error en Litar Perfil ", error);
-          console.log(error);
-        }
-      )
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+  // const filtrarObras = useCallback((data = {}) => {
+  //   // setLoading(true);
+  //   MantenimientosService.filtrarObras(data)
+  //     .then(
+  //       (data) => {
+  //         // setJsonData(data.text.obra);
+  //       },
+  //       (error) => {
+  //         notificacion("error", "Error en Litar Obras ", error);
+  //         console.log(error);
+  //       }
+  //     )
+  //     .finally(() => {
+  //       // setLoading(false);
+  //     });
+  // }, []);
 
   useEffect(() => {
     var obj = { estado: ["A", "I"] };
-    filtrarObras(obj);
-  }, [isModalOpen, filtrarObras]);
+    dispatch(aggObras(obj));
+    // filtrarObras(obj);
+  }, [isModalOpen, dispatch]);
 
-  const DataSource = JsonData?.map((prop, key) => {
+  const DataSource = obras?.map((prop, key) => {
     var obj = {};
     var estado = "";
     switch (prop.estado?.trim()) {
@@ -282,8 +289,17 @@ const Obras = (props) => {
         {prop.nocturno === "V" && <div>{"nocturno "}</div>}
       </div>
     );
-    prop.periodo = <div>{prop.fecha_inicio + " / " + prop.fecha_fin}</div>
-    obj.actividad = prop.actividades?.split(',')
+    prop.periodo = <div>{prop.fecha_inicio + " / " + prop.fecha_fin}</div>;
+    var jornadas = [
+      prop.matutino === "V" && "matutino",
+      prop.vespertino === "V" && "vespertino",
+      prop.nocturno === "V" && "nocturno",
+    ];
+    obj.jornadas =
+      jornadas.length > 0 && jornadas.filter((jornada) => jornada !== false);
+    var periodo =[moment(prop?.fecha_inicio), moment(prop?.fecha_fin)];
+    obj.periodos= periodo
+    obj.actividad = prop.actividades?.split(",");
     obj.estado_text = estado;
     obj.key = key + 1;
     obj.acciones = (
@@ -307,11 +323,10 @@ const Obras = (props) => {
             danger
             onClick={() => {
               let obj = DataSource.find((o) => o.key === key + 1);
-              obj.estado = "E";
-              obj.acciones = "";
+              let data = {id: obj.id, estado: "E"}
               // setObj(obj);
-              actualizarPerfil(obj);
-              filtrarObras();
+              actualizarObra(data);
+              dispatch(aggObras({ estado: ["A", "I"] }));
             }}
           >
             <i className="fa fa-times" />
@@ -353,7 +368,7 @@ const Obras = (props) => {
         </Col>
         <Col span={24}>
           <Table
-            loading={Loading}
+            loading={obrasFetching}
             locale={{
               emptyText: "Sin datos para mostrar",
             }}

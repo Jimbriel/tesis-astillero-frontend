@@ -35,19 +35,18 @@ export default function obrasReducer(state = taginit, action) {
 
 //acciones
 
-export const aggObras = (obj) => async (dispatch, getState) => {
-
+export const aggObras = (obj = {}) => async (dispatch, getState) => {
   try {
-    MantenimientosService.filtrarObras()
+    dispatch(ObrasFetching(true));
+    MantenimientosService.filtrarObras(obj)
       .then((result) => {
         console.log(result);
-        var obras = result.text.obras;
+        var obras = result.text.obra;
         dispatch({ type: AGREGAR_OBRAS, payload: obras });
       })
       .finally(() => {
         dispatch(ObrasFetching(false));
       });
-  
   } catch (err) {
     console.log(err);
   }
