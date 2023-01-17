@@ -7,7 +7,7 @@ import { MantenimientosService } from "../../jwt/_services";
 
 //constantes
 
-const taginit = {
+const obrainit = {
   data: [],
   obra: {},
   isfetching: false,
@@ -18,7 +18,7 @@ export const AGREGAR_OBRAS = "AGREGAR_OBRAS";
 export const SET_FETCHING_OBRAS = "SET_FETCHING_OBRAS";
 //reducer
 
-export default function obrasReducer(state = taginit, action) {
+export default function obrasReducer(state = obrainit, action) {
   switch (action.type) {
     case AGREGAR_OBRAS:
       return { ...state, data: action.payload };

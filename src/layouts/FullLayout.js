@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Suspense } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Header from "./layout-components/header/Header";
 import Sidebar from "./layout-components/sidebar/Sidebar";
@@ -7,12 +7,16 @@ import Footer from "./layout-components/footer/Footer";
 import Customizer from "./layout-components/customizer/Customizer";
 import RoutesMain from "../routes/Router";
 import AdminRoutes from "../routes/AdminRoutes";
+import ContratistaRoutes from "../routes/ContratistaRoutes";
 import Spinner from "./../views/spinner/Spinner";
+import { aggObras } from "../redux/obras/ObrasDucks";
+import { aggEmpleados } from "../redux/empleado/EmpleadosDucks";
 export default (props) => {
   const auth = useSelector((state) => state.auth);
   const [width, setWidth] = useState(window.innerWidth);
   const [ThemeR, setThemeR] = useState([]);
   const settings = useSelector((state) => state.settings);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const updateDimensions = () => {
@@ -65,7 +69,7 @@ export default (props) => {
           setThemeR(AdminRoutes);
           break;
         case 2:
-          setThemeR(RoutesMain);
+          setThemeR(ContratistaRoutes);
           break;
   
         default:
@@ -77,6 +81,14 @@ export default (props) => {
     }
     
   }
+
+  useEffect(() => {
+    if(auth.data_user?.id_perfil !== undefined || auth.data_user?.id_perfil !== null){
+      dispatch(aggEmpleados());
+      dispatch(aggObras());
+    }
+    // filtrarObras(obj);
+  }, [dispatch, auth.data_user.id_perfil,props.location]);
 
   // useEffect(() => {
   //   console.log(auth.data_user?.id_perfil);

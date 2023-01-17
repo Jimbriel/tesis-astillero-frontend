@@ -4,6 +4,7 @@
 // import { AuthenticationService } from "../../jwt/_services";
 import AdminRoutes from "../../routes/AdminRoutes";
 import RoutesMain from "../../routes/Router";
+import ContratistaRoutes from "../../routes/ContratistaRoutes";
 
 //constantes
 
@@ -37,7 +38,7 @@ export default function authReducer(state = INIT_STATE, action) {
       return {
         ...state,
         data_user: action.payload.user,
-        data_menu: action.payload.user?.id_perfil === 1 ? AdminRoutes : RoutesMain ,
+        data_menu: (action.payload.user?.id_perfil === 1) ? AdminRoutes : (action.payload.user?.id_perfil === 2 ? ContratistaRoutes : RoutesMain),
         // data_permissions: action.payload.permission_data,
 
         time_token: action.payload.user.expires_in,

@@ -83,7 +83,7 @@ const ModalObras = (props) => {
           setComboContratista(data.text.contratistas);
         },
         (error) => {
-          notificacion("error", "Error en Listar Usuario ", error);
+          notificacion("error", "Error en Listar Contratista ", error);
           console.log(error);
         }
       )
