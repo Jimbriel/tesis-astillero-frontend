@@ -8,6 +8,7 @@ import maintodoReducer from "./todos/Todos";
 import todoReducer from "./todos/";
 import authReducer from "./auth/authDucks";
 import obrasReducer from "./obras/ObrasDucks";
+import empleadoReducer from "./empleado/EmpleadosDucks";
 
 const Reducers = combineReducers({
   settings,
@@ -19,6 +20,7 @@ const Reducers = combineReducers({
   maintodoReducer,
   auth: authReducer,
   obras: obrasReducer,
+  empleados: empleadoReducer
 });
 
 export default Reducers;

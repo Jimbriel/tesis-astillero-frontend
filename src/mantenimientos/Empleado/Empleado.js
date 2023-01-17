@@ -1,4 +1,4 @@
-import React, { /* useCallback, */ useEffect, useRef, useState } from "react";
+import React, { /* useCallback, */ useRef, useState } from "react";
 import {
   Button,
   Card,
@@ -11,16 +11,16 @@ import {
   Table,
 } from "antd";
 import { FilterOutlined, PlusCircleOutlined } from "@ant-design/icons";
+import ModalEmpleado from "./ModalEmpleado";
 import { MantenimientosService } from "../../jwt/_services";
-import ModalObras from "./ModalObras";
-import moment from "moment";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { aggObras } from "../../redux/obras/ObrasDucks";
+import { aggEmpleados } from "../../redux/empleado/EmpleadosDucks";
 
-const Obras = (props) => {
+const Empleado = (props) => {
   const dispatch = useDispatch();
-  const obras = useSelector((store) => store.obras.data);
-  const obrasFetching = useSelector((store) => store.obras.isfetching);
+  const empleados = useSelector((store) => store.empleados.data);
+  const Loading = useSelector((store) => store.empleados.isfetching);
   const searchInput = useRef(null);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -116,12 +116,10 @@ const Obras = (props) => {
     },
     render: (text) => text,
   });
-  // const [JsonData, setJsonData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [titulo, setAccion] = useState("editar");
 
   const [obj, setObj] = useState({});
-  // const [Loading, setLoading] = useState(false);
   const columns = [
     {
       title: () => {
@@ -137,50 +135,43 @@ const Obras = (props) => {
 
     {
       title: () => {
-        return <span className="text-primary">Proyecto</span>;
+        return <span className="text-primary">Nombre</span>;
       },
-      dataIndex: "nombre_proyecto",
-      key: "nombre_proyecto",
+      dataIndex: "label",
+      key: "label",
       // render: (val) => checkBox_render(val),
       align: "center",
-      ...getColumnSearchProps("nombre_proyecto", "Proyecto"),
+      ...getColumnSearchProps("label", "Nombre"),
     },
     {
       title: () => {
-        return <span className="text-primary">Ubicación</span>;
+        return <span className="text-primary">Correo</span>;
       },
-      dataIndex: "lugar",
-      key: "lugar",
+      dataIndex: "correo",
+      key: "correo",
       // render: (val) => checkBox_render(val),
       align: "center",
-      ...getColumnSearchProps("lugar", "Ubicación"),
+      ...getColumnSearchProps("correo", "Correo"),
     },
     {
       title: () => {
-        return <span className="text-primary">Actividades</span>;
+        return <span className="text-primary">Empresa</span>;
       },
-      dataIndex: "actividades",
-      key: "actividades",
+      dataIndex: "empresa",
+      key: "empresa",
       // render: (val) => checkBox_render(val),
       align: "center",
+      ...getColumnSearchProps("empresa", "Correo"),
     },
     {
       title: () => {
-        return <span className="text-primary">Horarios</span>;
+        return <span className="text-primary">Obra</span>;
       },
-      dataIndex: "jornada",
-      key: "jornada",
+      dataIndex: "obra",
+      key: "obra",
       // render: (val) => checkBox_render(val),
       align: "center",
-    },
-    {
-      title: () => {
-        return <span className="text-primary">Periodo</span>;
-      },
-      dataIndex: "periodo",
-      key: "periodo",
-      // render: (val) => checkBox_render(val),
-      align: "center",
+      ...getColumnSearchProps("obra", "Correo"),
     },
     {
       title: () => {
@@ -225,48 +216,35 @@ const Obras = (props) => {
     setIsModalOpen(false);
   };
 
-  const actualizarObra = (data) => {
-    MantenimientosService.actualizarObra(data)
-        .then(
-          (data) => {
-            notificacion(
-              "success",
-              "Obra Actualizada Exitosamente ",
-              // data.text.obra.nombre_proyecto
-            );
-          },
-          (error) => {
-            notificacion("error", "Error en Crear Obra ", error);
-            console.log(error);
-          }
-        )
-        .finally(() => {});
+  const actualizarEmpleado = (data) => {
+    MantenimientosService.actualizarEmpleado(data)
+    .then(
+      (data) => {
+        // props.toggle();
+        console.log(data);
+        notificacion(
+          "success",
+          "Empleado Actualizado Exitosamente ",
+          // data.text.empleado?.nombre
+        );
+      },
+      (error) => {
+        notificacion("error", "Error en Actualizar Empleado ", error);
+        console.log(error);
+      }
+    )
+    .finally(() => {});
   };
 
-  // const filtrarObras = useCallback((data = {}) => {
-  //   // setLoading(true);
-  //   MantenimientosService.filtrarObras(data)
-  //     .then(
-  //       (data) => {
-  //         // setJsonData(data.text.obra);
-  //       },
-  //       (error) => {
-  //         notificacion("error", "Error en Litar Obras ", error);
-  //         console.log(error);
-  //       }
-  //     )
-  //     .finally(() => {
-  //       // setLoading(false);
-  //     });
-  // }, []);
+
 
   useEffect(() => {
     var obj = { estado: ["A", "I"] };
-    dispatch(aggObras(obj));
+    dispatch(aggEmpleados(obj));
     // filtrarObras(obj);
   }, [isModalOpen, dispatch]);
 
-  const DataSource = obras?.map((prop, key) => {
+  const DataSource = empleados?.map((prop, key) => {
     var obj = {};
     var estado = "";
     switch (prop.estado?.trim()) {
@@ -282,25 +260,10 @@ const Obras = (props) => {
       default:
         estado = "";
     }
-    obj.jornada = (
-      <div>
-        {prop.matutino === "T" && <div>{"matutino "}</div>}
-        {prop.vespertino === "T" && <div>{"vespertino "}</div>}
-        {prop.nocturno === "T" && <div>{"nocturno "}</div>}
-      </div>
-    );
-    prop.periodo = <div>{prop.fecha_inicio + " / " + prop.fecha_fin}</div>;
-    var jornadas = [
-      prop.matutino === "T" && "matutino",
-      prop.vespertino === "T" && "vespertino",
-      prop.nocturno === "T" && "nocturno",
-    ];
-    obj.jornadas =
-      jornadas.length > 0 && jornadas.filter((jornada) => jornada !== false);
-    var periodo =[moment(prop?.fecha_inicio), moment(prop?.fecha_fin)];
-    obj.periodos= periodo
-    obj.actividad = prop.actividades?.split(",");
     obj.estado_text = estado;
+    obj.obra = prop.empleado_obra?.obra?.nombre_proyecto;
+    obj.obra_id= prop.empleado_obra?.obra?.id;
+    obj.empresa = prop.contratista?.razon_social
     obj.key = key + 1;
     obj.acciones = (
       <Row justify="center" gutter={[8, 8]}>
@@ -324,9 +287,11 @@ const Obras = (props) => {
             onClick={() => {
               let obj = DataSource.find((o) => o.key === key + 1);
               let data = {id: obj.id, estado: "E"}
+              console.log(obj);
               // setObj(obj);
-              actualizarObra(data);
-              dispatch(aggObras({ estado: ["A", "I"] }));
+              actualizarEmpleado(data);
+              dispatch(aggEmpleados({estado: ['A', 'I']}));
+
             }}
           >
             <i className="fa fa-times" />
@@ -341,7 +306,7 @@ const Obras = (props) => {
 
   return (
     <Card>
-      <ModalObras
+      <ModalEmpleado
         Accion={titulo}
         isModalOpen={isModalOpen}
         obj={obj}
@@ -368,7 +333,7 @@ const Obras = (props) => {
         </Col>
         <Col span={24}>
           <Table
-            loading={obrasFetching}
+            loading={Loading}
             locale={{
               emptyText: "Sin datos para mostrar",
             }}
@@ -391,4 +356,4 @@ const Obras = (props) => {
   );
 };
 
-export default Obras;
+export default Empleado;

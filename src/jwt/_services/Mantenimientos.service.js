@@ -13,9 +13,51 @@ export const MantenimientosService = {
   crearContratista,
   actualizarContratista,
   filtrarObras,
+  filtrarEmpleados,
   crearObra,
   actualizarObra,
+  crearEmpleado,
+  actualizarEmpleado,
 };
+function actualizarEmpleado(data) {
+  const requestOptions = {
+    method: "post",
+    headers: AuthHeader(),
+    body: JSON.stringify(data),
+  };
+
+  return fetch(`${Url}mantenimientos/actualizarEmpleado`, requestOptions)
+    .then(HandleResponse)
+    .then((response) => {
+      return response;
+    });
+}
+function filtrarEmpleados(data) {
+  const requestOptions = {
+    method: "post",
+    headers: AuthHeader(),
+    body: JSON.stringify(data),
+  };
+
+  return fetch(`${Url}mantenimientos/filtrarEmpleados`, requestOptions)
+    .then(HandleResponse)
+    .then((response) => {
+      return response;
+    });
+}
+function crearEmpleado(data) {
+  const requestOptions = {
+    method: "post",
+    headers: AuthHeader(),
+    body: JSON.stringify(data),
+  };
+
+  return fetch(`${Url}mantenimientos/crearEmpleado`, requestOptions)
+    .then(HandleResponse)
+    .then((response) => {
+      return response;
+    });
+}
 function actualizarObra(data) {
   const requestOptions = {
     method: "post",

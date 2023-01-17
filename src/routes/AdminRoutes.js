@@ -8,6 +8,7 @@ const Perfil = lazy(() => import("../mantenimientos/Perfil/Perfil"));
 const Obras = lazy(() => import("../mantenimientos/Obras/Obras"));
 const Usuario = lazy(() => import("../mantenimientos/Usuarios/Usuario"));
 const Empresa = lazy(() => import("../mantenimientos/Empresa/Empresa"));
+const Empleado = lazy(() => import("../mantenimientos/Empleado/Empleado"));
 
 
 var ThemeRoutes = [
@@ -76,6 +77,13 @@ var ThemeRoutes = [
         mini: "B",
         icon: "mdi mdi-adjust",
         component: Obras,
+      },
+      {
+        path: "/mantenimientos/empleado",
+        name: "Empleado",
+        mini: "B",
+        icon: "mdi mdi-adjust",
+        component: Empleado,
       },
     ],
   },
