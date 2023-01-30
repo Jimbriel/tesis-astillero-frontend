@@ -17,6 +17,7 @@ const App = () => {
       <Router history={History}>
         <Switch>
           <Route exact path="/authentication/Login" component={BlankLayout} />;
+          <Route exact path="/authentication/registro/:codigo" component={BlankLayout} />;
           <PersistGate loading={<Spin />} persistor={persistor}>
             {indexRoutes.map((prop, key) => {
               return (
