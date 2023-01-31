@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Input, notification, Row, Select } from "antd";
 import { MantenimientosService } from "../../jwt/_services";
 import { useHistory } from "react-router-dom";
@@ -12,20 +12,29 @@ const sidebarBackground = {
 
 const Registro = (props) => {
     let history = useHistory();
+    const [form] = Form.useForm();
+
+
+    const [Hidden, setHidden] = useState(false);
+    const [IdContratista, setIdContratista] = useState(0);
+
     const notificacion = (type, mensaje, descripcion) => {
         notification[type]({
             message: mensaje,
             description: descripcion,
         });
     };
+
     const onFinish = (values) => {
-        MantenimientosService.actualizarContratista(values)
+        console.log({ ...values, id: IdContratista });
+        var obj = { ...values, id: IdContratista, estado_aprobacion: 'A' }
+        MantenimientosService.actualizarContratistaRegistro(obj)
             .then(
                 (data) => {
                     notificacion(
                         "success",
                         "Contratista Actualizado Exitosamente ",
-                        data.text.contratista.razon_social
+                        data.text?.contratista?.razon_social
                     );
                 },
                 (error) => {
@@ -45,35 +54,33 @@ const Registro = (props) => {
             // console.log(props.match.params.id);
             const obj = {
                 codigo: props.match.params.codigo
+
             }
             console.log(obj)
-            // LandingService.validarCoidigoRegistro(obj)
-            //     .then((data) => {
-            //         // console.log(data)
-            //         if (data.text.msg === 'ok') {
-            //             //cambiar estado para mostrar fomulario
-            //             setComponenteRegistro(true);
-            //         }
-            //     },
-            //         (error) => {
-            //             // console.log(error)
-            //             var respuesta = { ok: false, message: error.mensaje, ruta: '/' };
-            //             if(error.data){
-            //                 setStade(true)
-            //             }
-            //             Mensaje(respuesta);
-            //             return false;
-            //         }
-            //     )
-            //     .finally(() => {
+            MantenimientosService.validarCodigoRegistro(obj)
+                .then((data) => {
+                    console.log(data);
+                    data.valido && setHidden(true);
+                    setIdContratista(data.text?.contratista?.id);
+                    // form.setFieldValue.representante  data.contratista?.representante
+                    form.setFieldsValue({
+                        representante: data.text?.contratista?.representante,
+                    });
+                },
+                    (error) => {
+                        console.log(error)
 
-            //     });
+                    }
+                )
+                .finally(() => {
+
+                });
         }
-    }, [props])
-    
+    }, [props, form])
+
     return (
         <div className="auth-wrapper d-flex no-block justify-content-center align-items-center" style={sidebarBackground}>
-            <Row className="bg-white p-5" style={{ borderRadius: "25px" }} gutter={[16, 16]}>
+            <Row className="bg-white p-5" style={{ borderRadius: "25px" }} gutter={[16, 16]} hidden={Hidden}>
                 <Col span={24} className="text-center">
                     <h3>Formulario de Registro Contratista</h3>
 
@@ -91,6 +98,7 @@ const Registro = (props) => {
                         onFinish={onFinish}
                         // onFinishFailed={onFinishFailed}
                         autoComplete="off"
+                        form={form}
                     >
                         <Form.Item
                             label="Ruc"
@@ -122,20 +130,13 @@ const Registro = (props) => {
                             <Input />
                         </Form.Item>
                         <Form.Item
-                            name="user_id"
                             label="Representante"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Por favor seleccione un Represente!",
-                                },
-                            ]}
+                            name="representante"
+
                         >
-                            <Select
-                                // options={ComboUsuarios}
-                                placeholder="Seleccionar Representante"
-                            ></Select>
+                            <Input disabled={true} />
                         </Form.Item>
+
                         <Form.Item name="tipo_contratista" label="Tipo Contratista">
                             <Select placeholder="Seleccione un tipo de contratista">
                                 <Select.Option value="1">Tipo 1</Select.Option>
