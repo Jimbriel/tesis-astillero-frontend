@@ -6,8 +6,10 @@ const Lockscreen = lazy(() => (import('../views/authentication/LockScreen')));
 const Recoverpwd = lazy(() => (import('../views/authentication/RecoverPwd')));
 const Maintanance = lazy(() => (import('../views/authentication/Maintanance')));
 const Login = lazy(() => (import("../views/authentication/Login")));
+const Registro = lazy(() => (import("../views/authentication/Registro")));
 
 var AuthRoutes = [
+    { path: '/authentication/registro/:codigo', name: 'Registro', icon: 'mdi mdi-account-key', component: Registro },
     { path: '/authentication/Login', name: 'Login', icon: 'mdi mdi-account-key', component: Login },
     { path: '/authentication/Login2', name: 'Login with Firebase', icon: 'mdi mdi-account-key', component: Login2 },
     { path: '/authentication/Register', name: 'Register', icon: 'mdi mdi-account-plus', component: Register },

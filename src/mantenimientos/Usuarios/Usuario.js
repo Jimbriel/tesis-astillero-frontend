@@ -203,14 +203,14 @@ const Usuario = (props) => {
     setIsModalOpen(false);
   };
 
-  const actualizarPerfil = (data) => {
-    MantenimientosService.actualizarPerfil(data)
+  const actualizarUsuario = (data) => {
+    MantenimientosService.actualizarUsuario(data)
       .then(
         (data) => {
           notificacion(
             "success",
-            "Perfil Actualizado Exitosamente ",
-            data.text.perfil.descripcion
+            "Usuario Actualizado Exitosamente ",
+            data?.text?.usuario?.name
           );
         },
         (error) => {
@@ -287,7 +287,7 @@ const Usuario = (props) => {
               obj.estado = "E";
               obj.acciones = "";
               // setObj(obj);
-              actualizarPerfil(obj);
+              actualizarUsuario(obj);
               filtrarUsuario();
             }}
           >
