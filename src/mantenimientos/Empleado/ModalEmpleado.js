@@ -191,7 +191,7 @@ const ModalEmpleado = (props) => {
         form={form}
         autoComplete="off"
       >
-        <Form.Item
+        {/* <Form.Item
           name="user_id"
           label="Usuario"
           // rules={[
@@ -206,7 +206,7 @@ const ModalEmpleado = (props) => {
             onChange={onChange}
             placeholder="Seleccionar Usuario"
           ></Select>
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item
           label="Cedula"
           name="cedula"

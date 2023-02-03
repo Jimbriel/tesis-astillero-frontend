@@ -60,7 +60,7 @@ const Registro = (props) => {
             MantenimientosService.validarCodigoRegistro(obj)
                 .then((data) => {
                     console.log(data);
-                    data.valido && setHidden(true);
+                    data?.text?.contratista === null && setHidden(true);
                     setIdContratista(data.text?.contratista?.id);
                     // form.setFieldValue.representante  data.contratista?.representante
                     form.setFieldsValue({
