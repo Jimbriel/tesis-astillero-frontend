@@ -300,6 +300,7 @@ const Obras = (props) => {
     var periodo =[moment(prop?.fecha_inicio), moment(prop?.fecha_fin)];
     obj.periodos= periodo
     obj.actividad = prop.actividades?.split(",");
+    obj.lugares = prop.lugar?.split(",");
     obj.estado_text = estado;
     obj.key = key + 1;
     obj.acciones = (

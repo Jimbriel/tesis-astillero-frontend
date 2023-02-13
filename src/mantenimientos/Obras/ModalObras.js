@@ -34,6 +34,7 @@ const ModalObras = (props) => {
   };
   const onFinish = (values) => {
     console.log("Success:", values);
+    return false;
     if (props.Accion === "editar") {
       var obj = { ...values, id: props.obj.id };
       MantenimientosService.actualizarObra(obj)
@@ -51,24 +52,24 @@ const ModalObras = (props) => {
             console.log(error);
           }
         )
-        .finally(() => {});
+        .finally(() => { });
     } else {
-    MantenimientosService.crearObra(values)
-      .then(
-        (data) => {
-          props.toggle();
-          notificacion(
-            "success",
-            "Obra Creada Exitosamente ",
-            data.text.obra.nombre_proyecto
-          );
-        },
-        (error) => {
-          notificacion("error", "Error en Crear Obra ", error);
-          console.log(error);
-        }
-      )
-      .finally(() => {});
+      MantenimientosService.crearObra(values)
+        .then(
+          (data) => {
+            props.toggle();
+            notificacion(
+              "success",
+              "Obra Creada Exitosamente ",
+              data.text.obra.nombre_proyecto
+            );
+          },
+          (error) => {
+            notificacion("error", "Error en Crear Obra ", error);
+            console.log(error);
+          }
+        )
+        .finally(() => { });
     }
   };
   const onFinishFailed = (errorInfo) => {
@@ -109,7 +110,7 @@ const ModalObras = (props) => {
 
   //       });
   //   }
-    
+
   // }, [props.isModalOpen]);
 
   return (
@@ -137,6 +138,7 @@ const ModalObras = (props) => {
           actividades: props.obj.actividad,
           jornada: props.obj.jornadas,
           periodo: props.obj.periodos,
+          lugar: props.obj.lugares
 
         }}
         // initialValues={InitialValues}
@@ -158,7 +160,7 @@ const ModalObras = (props) => {
           <Input />
         </Form.Item>
         <Form.Item
-          name="contratista_id"
+          name="contratistas"
           label="Empresa"
           rules={[
             {
@@ -168,6 +170,7 @@ const ModalObras = (props) => {
           ]}
         >
           <Select
+            mode="multiple"
             options={ComboContratista}
             placeholder="Seleccionar Empresa"
           ></Select>
@@ -194,14 +197,19 @@ const ModalObras = (props) => {
         </Form.Item>
 
         <Form.Item label="Lugar de Trabajo" name="lugar">
-          <Input />
+        <Select mode="multiple" placeholder="Jornada de trabajo">
+            <Option value="puerto">puerto</Option>
+            <Option value="dique">dique</Option>
+            <Option value="taller1">taller de carpinteria</Option>
+            <Option value="taller2">taller de soldadurta</Option>
+          </Select>
         </Form.Item>
-        <Form.Item label="Duracion del Proyecto" name="periodo"   rules={[
-            {
-              required: true,
-              message: "Por favor seleccione periodo de trabajo",
-            },
-          ]}>
+        <Form.Item label="Duracion del Proyecto" name="periodo" rules={[
+          {
+            required: true,
+            message: "Por favor seleccione periodo de trabajo",
+          },
+        ]}>
           <RangePicker
             // allowClear
             style={{ width: "100%" }}
