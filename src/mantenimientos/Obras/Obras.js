@@ -11,7 +11,7 @@ import {
   Table,
 } from "antd";
 import { FilterOutlined, PlusCircleOutlined } from "@ant-design/icons";
-import { MantenimientosService } from "../../jwt/_services";
+import { AuthenticationService, MantenimientosService } from "../../jwt/_services";
 import ModalObras from "./ModalObras";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,6 +22,8 @@ const Obras = (props) => {
   const obras = useSelector((store) => store.obras.data);
   const obrasFetching = useSelector((store) => store.obras.isfetching);
   const searchInput = useRef(null);
+
+  const currentUser = AuthenticationService.currentUserValue;
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     // setSearchText(selectedKeys[0]);
@@ -227,20 +229,20 @@ const Obras = (props) => {
 
   const actualizarObra = (data) => {
     MantenimientosService.actualizarObra(data)
-        .then(
-          (data) => {
-            notificacion(
-              "success",
-              "Obra Actualizada Exitosamente ",
-              // data.text.obra.nombre_proyecto
-            );
-          },
-          (error) => {
-            notificacion("error", "Error en Crear Obra ", error);
-            console.log(error);
-          }
-        )
-        .finally(() => {});
+      .then(
+        (data) => {
+          notificacion(
+            "success",
+            "Obra Actualizada Exitosamente ",
+            // data.text.obra.nombre_proyecto
+          );
+        },
+        (error) => {
+          notificacion("error", "Error en Crear Obra ", error);
+          console.log(error);
+        }
+      )
+      .finally(() => { });
   };
 
   // const filtrarObras = useCallback((data = {}) => {
@@ -297,8 +299,8 @@ const Obras = (props) => {
     ];
     obj.jornadas =
       jornadas.length > 0 && jornadas.filter((jornada) => jornada !== false);
-    var periodo =[moment(prop?.fecha_inicio), moment(prop?.fecha_fin)];
-    obj.periodos= periodo
+    var periodo = [moment(prop?.fecha_inicio), moment(prop?.fecha_fin)];
+    obj.periodos = periodo
     obj.actividad = prop.actividades?.split(",");
     obj.lugares = prop.lugar?.split(",");
     obj.estado_text = estado;
@@ -324,7 +326,7 @@ const Obras = (props) => {
             danger
             onClick={() => {
               let obj = DataSource.find((o) => o.key === key + 1);
-              let data = {id: obj.id, estado: "E"}
+              let data = { id: obj.id, estado: "E" }
               // setObj(obj);
               actualizarObra(data);
               dispatch(aggObras({ estado: ["A", "I"] }));
@@ -350,23 +352,26 @@ const Obras = (props) => {
       />
 
       <Row gutter={[16, 16]}>
-        <Col>
-          <Button
-            type="primary"
-            className="d-flex align-items-center"
-            icon={<PlusCircleOutlined />}
-            size="large"
-            // loading={loadings[1]}
-            // onClick={() => enterLoading(1)}
-            onClick={() => {
-              setObj({});
-              setAccion("nuevo");
-              showModal();
-            }}
-          >
-            <span style={{ fontSize: "21px" }}>Nuevo</span>
-          </Button>
-        </Col>
+        {parseInt(currentUser.user?.id_perfil) === 1 && (
+          <Col>
+            <Button
+              type="primary"
+              className="d-flex align-items-center"
+              icon={<PlusCircleOutlined />}
+              size="large"
+              // loading={loadings[1]}
+              // onClick={() => enterLoading(1)}
+              onClick={() => {
+                setObj({});
+                setAccion("nuevo");
+                showModal();
+              }}
+            >
+              <span style={{ fontSize: "21px" }}>Nuevo</span>
+            </Button>
+          </Col>
+        )}
+
         <Col span={24}>
           <Table
             loading={obrasFetching}

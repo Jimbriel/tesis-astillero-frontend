@@ -26,7 +26,7 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
           // ) {
           // console.log(auth.data_user?.perfil);
           var path = "/dashboards/analytical";
-          if (parseInt(currentUser.user?.id_perfil) === 1) {
+          if (parseInt(currentUser.user?.id_perfil) === 1 || parseInt(currentUser.user?.id_perfil) === 2) {
             //  console.log("currentUser.user.id_perfil");
             // console.log(currentUser.user.id_perfil);
             path = "/dashboards/main";

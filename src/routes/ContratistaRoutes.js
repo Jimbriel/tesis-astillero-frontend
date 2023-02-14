@@ -9,8 +9,33 @@ import { lazy } from "react";
 
 const Obras = lazy(() => import("../mantenimientos/Obras/Obras"));
 const Empleado = lazy(() => import("../mantenimientos/Empleado/Empleado"));
+const MainDashboard = lazy(() => import("../views/dashboards/MainDashboard"));
 
 var ThemeRoutes = [
+  {
+    navlabel: true,
+    name: "Personal",
+    icon: "",
+  },
+  {
+    collapse: true,
+    path: "/dashboards",
+    name: "Dashboards",
+    state: "dashboardpages",
+    icon: "home",
+    badges: "side-badge badge badge-info",
+    badgeno: "3",
+    child: [
+       {
+        path: "/dashboards/main",
+        name: "Main Dashboard",
+        mini: "B",
+        icon: "mdi mdi-adjust",
+        component: MainDashboard,
+      },
+  
+    ],
+  },
   
   {
     navlabel: true,
@@ -19,7 +44,7 @@ var ThemeRoutes = [
   },
   {
     collapse: true,
-    path: "/empleados",
+    path: "/mantenimientos",
     name: "Empleados",
     state: "empleadospages",
     icon: "fa fa-wrench",

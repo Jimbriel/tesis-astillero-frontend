@@ -13,6 +13,7 @@ const ModalEmpleado = (props) => {
   const [form] = Form.useForm();
   const [ComboContratista, setComboContratista] = useState([]);
   const obras = useSelector((store) => store.obras.data);
+  const currentUser = useSelector((store) => store.auth.data_user);
   // const dispatch = useDispatch();
   // const [ Error, setError] = useState(true)
   // const [Descripcion, setDescripcion] = useState("")
@@ -48,7 +49,7 @@ const ModalEmpleado = (props) => {
             console.log(error);
           }
         )
-        .finally(() => {});
+        .finally(() => { });
     } else {
       MantenimientosService.crearEmpleado(values)
         .then(
@@ -65,7 +66,7 @@ const ModalEmpleado = (props) => {
             console.log(error);
           }
         )
-        .finally(() => {});
+        .finally(() => { });
     }
   };
 
@@ -98,11 +99,12 @@ const ModalEmpleado = (props) => {
 
   const onChangeObra = (e) => {
     var obj = obras.find((o) => o.id === e);
-    if (obj !== undefined) {
-      form.setFieldsValue({
-        contratista_id: obj.contratista_id,
-      });
-    }
+    console.log(obj);
+    // if (obj !== undefined) {
+    //   form.setFieldsValue({
+    //     contratista_id: obj.contratista_id,
+    //   });
+    // }
   };
 
   const filtrarUsuario = useCallback((data = {}) => {
@@ -160,6 +162,9 @@ const ModalEmpleado = (props) => {
       });
     } else {
       form.resetFields();
+      if (currentUser.id_perfil === 2) {
+        form.setFieldsValue({ contratista_id: currentUser.contratista?.id });
+      }
     }
   }, [props.Accion, props.obj, form]);
 
@@ -233,7 +238,7 @@ const ModalEmpleado = (props) => {
               message: "Por favor ingrese un nombre!",
             },
           ]}
-          // onChange = {(e) => setDescripcion(e.target.value) }
+        // onChange = {(e) => setDescripcion(e.target.value) }
         >
           <Input />
         </Form.Item>
@@ -246,7 +251,7 @@ const ModalEmpleado = (props) => {
               message: "Por favor ingrese un apellido!",
             },
           ]}
-          // onChange = {(e) => setDescripcion(e.target.value) }
+        // onChange = {(e) => setDescripcion(e.target.value) }
         >
           <Input />
         </Form.Item>
@@ -280,12 +285,12 @@ const ModalEmpleado = (props) => {
         <Form.Item
           name="obra_id"
           label="Obra"
-          rules={[
-            {
-              required: true,
-              message: "Por favor seleccione Obra!",
-            },
-          ]}
+        // rules={[
+        //   {
+        //     required: true,
+        //     message: "Por favor seleccione Obra!",
+        //   },
+        // ]}
         >
           <Select
             options={obras}
@@ -304,6 +309,8 @@ const ModalEmpleado = (props) => {
           ]}
         >
           <Select
+            disabled={currentUser.id_perfil === 2 ? true : false}
+            // defaultValue={currentUser.id_perfil === 2 && currentUser.contratista?.id}
             options={ComboContratista}
             placeholder="Seleccionar Empresa"
           ></Select>
