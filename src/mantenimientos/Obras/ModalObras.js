@@ -34,7 +34,7 @@ const ModalObras = (props) => {
   };
   const onFinish = (values) => {
     console.log("Success:", values);
-    return false;
+    // return false;
     if (props.Accion === "editar") {
       var obj = { ...values, id: props.obj.id };
       MantenimientosService.actualizarObra(obj)
@@ -92,6 +92,17 @@ const ModalObras = (props) => {
         // setLoading(false);
       });
   }, []);
+
+  const handleSelectChange = (value, changedValues) => {
+    const removedOptions = ComboContratista.filter(option => !value.includes(option.value));
+    // const removedOptions = ComboContratista.map (option => 
+      
+    //   value.includes(option.value) ? option : null
+         
+    //   );
+
+    console.log('Opciones eliminadas:', removedOptions);
+  }
 
   useEffect(() => {
     filtrarContratista();
@@ -172,6 +183,7 @@ const ModalObras = (props) => {
           <Select
             mode="multiple"
             options={ComboContratista}
+            onChange={handleSelectChange}
             placeholder="Seleccionar Empresa"
           ></Select>
         </Form.Item>
