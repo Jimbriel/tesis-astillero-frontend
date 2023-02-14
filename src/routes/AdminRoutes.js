@@ -1,3 +1,4 @@
+import Link from "antd/lib/typography/Link";
 import { lazy } from "react";
 
 // const Analytical = lazy(() => import("../views/dashboards/Analytical"));
@@ -13,7 +14,7 @@ const Empleado = lazy(() => import("../mantenimientos/Empleado/Empleado"));
 // const ReporteObras = lazy(() => import("../reportes/ReporteObras"));
 // const ReporteContratistas = lazy(() => import("../reportes/ReporteContratistas"));
 // const ReporteEmpleados = lazy(() => import("../reportes/ReporteEmpleados"));
-// const ReportesGenerales = lazy(() => import("../reportes/ReportesGenerales"));
+const ReportesGenerales = lazy(() => import("../reportes/ReportesGenerales"));
 
 var ThemeRoutes = [
   {
@@ -89,47 +90,55 @@ var ThemeRoutes = [
         icon: "mdi mdi-adjust",
         component: Empleado,
       },
+      {
+        path: "/reportes/reportesgenerales",
+        name: "Reporte General",
+        mini: "B",
+        icon: "mdi mdi-adjust",
+        component: ReportesGenerales,
+        // href: "http://localhost:90/api/Reportes/ReporteGeneral/"
+      },
     ],
   },
   //Reportes
   // {
-  //   collapse: true,
-  //   path: "/Reportes",
-  //   name: "Reportes",
-  //   state: "reportespages",
-  //   icon: "fa fa-wrench",
-  //   badges: "side-badge badge badge-info",
-  //   badgeno: "3",
-  //   child: [
-  //     {
-  //       path: "/reportes/obras",
-  //       name: "Reporte Obras",
-  //       mini: "B",
-  //       icon: "mdi mdi-adjust",
-  //       component: ReporteObras,
-  //     },
-  //     {
-  //       path: "/reportes/contratistas",
-  //       name: "Reporte Contratistas",
-  //       mini: "B",
-  //       icon: "mdi mdi-adjust",
-  //       component: ReporteContratistas,
-  //     },
-  //     {
-  //       path: "/reportes/empleados",
-  //       name: "Reporte Empleados",
-  //       mini: "B",
-  //       icon: "mdi mdi-adjust",
-  //       component: ReporteEmpleados,
-  //     },
-  //     {
-  //       path: "/reportes/reportegeneral",
-  //       name: "Reporte General",
-  //       mini: "B",
-  //       icon: "mdi mdi-adjust",
-  //       component: ReportesGenerales,
-  //     },
-  //   ],
+    // collapse: true,
+    // path: "/api/Reportes/ReporteGeneral/",
+    // name: "Reporte General",
+    // icon: "fa fa-wrench",
+    // badges: "side-badge badge badge-info",
+    // href: "http://localhost:90/api/Reportes/ReporteGeneral/"
+    // badgeno: "3",
+    // child: [
+    //   {
+    //     path: "/reportes/obras",
+    //     name: "Reporte Obras",
+    //     mini: "B",
+    //     icon: "mdi mdi-adjust",
+    //     component: ReporteObras,
+    //   },
+    //   {
+    //     path: "/reportes/contratistas",
+    //     name: "Reporte Contratistas",
+    //     mini: "B",
+    //     icon: "mdi mdi-adjust",
+    //     component: ReporteContratistas,
+    //   },
+    //   {
+    //     path: "/reportes/empleados",
+    //     name: "Reporte Empleados",
+    //     mini: "B",
+    //     icon: "mdi mdi-adjust",
+    //     component: ReporteEmpleados,
+    //   },
+    //   {
+    //     path: "/reportes/reportegeneral",
+    //     name: "Reporte General",
+    //     mini: "B",
+    //     icon: "mdi mdi-adjust",
+    //     component: ReportesGenerales,
+    //   },
+    // ],
   // },
   
 ];

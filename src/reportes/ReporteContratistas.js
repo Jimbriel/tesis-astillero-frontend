@@ -219,20 +219,20 @@ const ReporteContratistas = (props) => {
 
   return (
     <Card>
-        <Row gutter={[16, 16]}>
-            <Col span={24}>
-                <div
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        height: '20'
-                    }}
-                    >
-                    <b style={{fontSize: '20px'}}>REPORTE CONTRATISTAS</b>
-                </div>
-            </Col>
-        </Row>
+    <Row gutter={[16, 16]}>
+        <Col span={24}>
+            <div
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '20'
+                }}
+                >
+                <b style={{fontSize: '20px'}}>REPORTE CONTRATISTAS</b>
+            </div>
+        </Col>
+      </Row>
       <Row gutter={[16, 16]}>
         <Col>
           <Button
