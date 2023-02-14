@@ -161,6 +161,15 @@ const Empresa = (props) => {
     },
     {
       title: () => {
+        return <span className="text-primary">Estado Aprobación</span>;
+      },
+      dataIndex: "estado_aprobacion",
+      key: "estado_aprobacion",
+      // render: (val) => checkBox_render(val),
+      align: "center",
+    },
+    {
+      title: () => {
         return <span className="text-primary">Estado</span>;
       },
       dataIndex: "estado_text",

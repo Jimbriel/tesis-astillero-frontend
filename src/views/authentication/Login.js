@@ -91,8 +91,16 @@ const Login = (props) => {
                         };
 
                         console.log(user);
-                        dispatch(setLoginSuccess(user));
-                        props.history.push(from);
+                        if(user.hasOwnProperty('ok') && !user.ok){
+                          console.log(user);
+                          props.history.push('/');
+
+                        }else{
+                          dispatch(setLoginSuccess(user));
+                          props.history.push(from);
+
+                        }
+
                       },
                       (error) => {
                         setSubmitting(false);

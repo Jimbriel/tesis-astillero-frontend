@@ -40,7 +40,6 @@ export const aggObras = (obj = {}) => async (dispatch, getState) => {
     dispatch(ObrasFetching(true));
     MantenimientosService.filtrarObras(obj)
       .then((result) => {
-        console.log(result);
         var obras = result.text.obra;
         dispatch({ type: AGREGAR_OBRAS, payload: obras });
       })

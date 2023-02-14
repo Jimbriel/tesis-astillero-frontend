@@ -12,13 +12,44 @@ export const MantenimientosService = {
   crearUsuario,
   crearContratista,
   actualizarContratista,
+  actualizarContratistaRegistro,
   filtrarObras,
   filtrarEmpleados,
   crearObra,
   actualizarObra,
   crearEmpleado,
   actualizarEmpleado,
+  validarCodigoRegistro
 };
+
+function actualizarContratistaRegistro(data) {
+  const requestOptions = {
+    method: "post",
+    headers: AuthHeader(),
+    body: JSON.stringify(data),
+  };
+
+  return fetch(`${Url}auth/actualizarContratista`, requestOptions)
+    .then(HandleResponse)
+    .then((response) => {
+      return response;
+    });
+}
+
+function validarCodigoRegistro(data) {
+  const requestOptions = {
+    method: "post",
+    headers: AuthHeader(),
+    body: JSON.stringify(data),
+  };
+
+  return fetch(`${Url}auth/verificarCodigo`, requestOptions)
+    .then(HandleResponse)
+    .then((response) => {
+      return response;
+    });
+}
+
 function actualizarEmpleado(data) {
   const requestOptions = {
     method: "post",
