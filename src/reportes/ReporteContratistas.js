@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   Button,
   Card,
@@ -11,16 +11,12 @@ import {
   Table,
 } from "antd";
 import { FilterOutlined, PlusCircleOutlined } from "@ant-design/icons";
-import ModalPerfil from "./ModalPerfil";
-import { MantenimientosService } from "../../jwt/_services";
-import { useEffect } from "react";
+import { MantenimientosService } from "../jwt/_services";
 
-const Perfil = (props) => {
+const ReporteContratistas = (props) => {
   const searchInput = useRef(null);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
-    // setSearchText(selectedKeys[0]);
-    // setSearchedColumn(dataIndex);
   };
   const notificacion = (type, mensaje, descripcion) => {
     notification[type]({
@@ -79,19 +75,6 @@ const Perfil = (props) => {
           >
             Limpiar
           </Button>
-          {/* <Button
-                        type="link"
-                        size="small"
-                        onClick={() => {
-                            confirm({
-                                closeDropdown: false,
-                            });
-                            setSearchText(selectedKeys[0]);
-                            setSearchedColumn(dataIndex);
-                        }}
-                    >
-                        Filter
-                    </Button> */}
         </Space>
       </div>
     ),
@@ -117,6 +100,8 @@ const Perfil = (props) => {
 
   const [obj, setObj] = useState({});
   const [Loading, setLoading] = useState(false);
+
+
   const columns = [
     {
       title: () => {
@@ -132,13 +117,32 @@ const Perfil = (props) => {
 
     {
       title: () => {
-        return <span className="text-primary">Nombre</span>;
+        return <span className="text-primary">Razón social</span>;
       },
-      dataIndex: "descripcion",
-      key: "descripcion",
+      dataIndex: "razon_social",
+      key: "razon_social",
       // render: (val) => checkBox_render(val),
       align: "center",
-      ...getColumnSearchProps("descripcion", "Nombre"),
+      ...getColumnSearchProps("razon_social", "Razón social"),
+    },
+
+    {
+      title: () => {
+        return <span className="text-primary">Tipo de Contratista</span>;
+      },
+      dataIndex: "tipoContratista",
+      key: "tipoContratista",
+      // render: (val) => checkBox_render(val),
+      align: "center",
+    },
+    {
+      title: () => {
+        return <span className="text-primary">Representante Legal</span>;
+      },
+      dataIndex: "representante",
+      key: "representante",
+      // render: (val) => checkBox_render(val),
+      align: "center",
     },
     {
       title: () => {
@@ -162,51 +166,15 @@ const Perfil = (props) => {
       align: "center",
       width: 200,
     },
-    {
-      title: () => {
-        return <span className="text-primary">Acciones</span>;
-      },
-      dataIndex: "acciones",
-      key: "acciones",
-      // render: (val) => checkBox_render(val),
-      align: "center",
-      fixed: 'right',
-      width: 200,
-    },
   ];
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const actualizarPerfil = (data) => {
-    MantenimientosService.actualizarPerfil(data)
-      .then(
-        (data) => {
-          notificacion(
-            "success",
-            "Perfil Actualizado Exitosamente ",
-            data.text.perfil.descripcion
-          );
-        },
-        (error) => {
-          notificacion("error", "Error en Crear Perfil ", error);
-          console.log(error);
-        }
-      )
-      .finally(() => {});
-  };
-
-  const filtrarPerfil = useCallback((data = {}) => {
+  const filtrarContratista = useCallback((data = {}) => {
     setLoading(true);
-    MantenimientosService.filtrarPerfil(data)
+    MantenimientosService.filtrarContratista(data)
       .then(
         (data) => {
-          setJsonData(data.text.perfil);
+          setJsonData(data.text.contratistas);
         },
         (error) => {
           notificacion("error", "Error en Litar Perfil ", error);
@@ -218,12 +186,10 @@ const Perfil = (props) => {
       });
   }, []);
 
-  useEffect(() => {
-    var obj = { estado: ["A", "I"] };
-    filtrarPerfil(obj);
-  }, [isModalOpen, filtrarPerfil]);
-
-  
+    useEffect(() => {
+      var obj = { estado: ["A", "I"] };
+      filtrarContratista(obj);
+    }, [isModalOpen, filtrarContratista]);
 
   const DataSource = JsonData?.map((prop, key) => {
     var obj = {};
@@ -241,41 +207,11 @@ const Perfil = (props) => {
       default:
         estado = "";
     }
+    obj.tipoContratista =<span> {"Tipo " + prop.tipo_contratista}</span>
+    obj.representante = prop.users.name;
     obj.estado_text = estado;
     obj.key = key + 1;
-    obj.acciones = (
-      <Row justify="center" gutter={[8, 8]}>
-        <Col>
-          <Button
-            type="primary"
-            onClick={() => {
-              let obj = DataSource.find((o) => o.key === key + 1);
-              setObj(obj);
-              setAccion("editar");
-              showModal();
-            }}
-          >
-            <i className="fa fa-edit" />
-          </Button>
-        </Col>
-        <Col>
-          <Button
-            type="primary"
-            danger
-            onClick={() => {
-              let obj = DataSource.find((o) => o.key === key + 1);
-              obj.estado = "E";
-              obj.acciones = "";
-              // setObj(obj);
-              actualizarPerfil(obj);
-              filtrarPerfil();
-            }}
-          >
-            <i className="fa fa-times" />
-          </Button>
-        </Col>
-      </Row>
-    );
+    console.log(obj)
     return { ...prop, ...obj };
   });
   // const [searchText, setSearchText] = useState('');
@@ -283,13 +219,7 @@ const Perfil = (props) => {
 
   return (
     <Card>
-      <ModalPerfil
-        Accion={titulo}
-        isModalOpen={isModalOpen}
-        obj={obj}
-        toggle={() => closeModal()}
-      />
-      <Row gutter={[16, 16]}>
+    <Row gutter={[16, 16]}>
         <Col span={24}>
             <div
                 style={{
@@ -299,7 +229,7 @@ const Perfil = (props) => {
                     height: '20'
                 }}
                 >
-                <b style={{fontSize: '20px'}}>PERFIL</b>
+                <b style={{fontSize: '20px'}}>REPORTE CONTRATISTAS</b>
             </div>
         </Col>
       </Row>
@@ -315,7 +245,6 @@ const Perfil = (props) => {
             onClick={() => {
               setObj({});
               setAccion("nuevo");
-              showModal();
             }}
           >
             <span style={{ fontSize: "21px" }}>Nuevo</span>
@@ -338,7 +267,7 @@ const Perfil = (props) => {
               hideOnSinglePage: true,
             }}
             showSizeChanger={false}
-            scroll={{ x:1200,/*  y: 300 */ }}
+            scroll={{ x: 1200 /*  y: 300 */ }}
           />
         </Col>
       </Row>
@@ -346,4 +275,4 @@ const Perfil = (props) => {
   );
 };
 
-export default Perfil;
+export default ReporteContratistas;

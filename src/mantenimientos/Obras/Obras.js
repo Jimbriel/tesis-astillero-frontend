@@ -350,28 +350,51 @@ const Obras = (props) => {
         obj={obj}
         toggle={() => closeModal()}
       />
-
       <Row gutter={[16, 16]}>
-        {parseInt(currentUser.user?.id_perfil) === 1 && (
-          <Col>
-            <Button
-              type="primary"
-              className="d-flex align-items-center"
-              icon={<PlusCircleOutlined />}
-              size="large"
-              // loading={loadings[1]}
-              // onClick={() => enterLoading(1)}
-              onClick={() => {
-                setObj({});
-                setAccion("nuevo");
-                showModal();
-              }}
-            >
-              <span style={{ fontSize: "21px" }}>Nuevo</span>
-            </Button>
-          </Col>
-        )}
-
+        <Col span={24}>
+            <div
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '20'
+                }}
+                >
+                <b style={{fontSize: '20px'}}>OBRAS</b>
+            </div>
+        </Col>
+      </Row>
+      <Row gutter={[16, 16]}>
+        <Col>
+          <Button
+            type="primary"
+            className="d-flex align-items-center"
+            icon={<PlusCircleOutlined />}
+            size="large"
+            // loading={loadings[1]}
+            // onClick={() => enterLoading(1)}
+            onClick={() => {
+              setObj({});
+              setAccion("nuevo");
+              showModal();
+            }}
+          >
+            <span style={{ fontSize: "21px" }}>Nuevo</span>
+          </Button>
+        </Col>
+        <Col span={18}>
+        </Col>
+        <Col>
+              <a
+                // href={Url + 'Reportes/ReporteObra'}
+                href={"http://localhost:90/api/Reportes/ReporteObra/"}
+                className="btn d-flex align-items-center"
+                style={{background:"#6ae695", color: "#fff"}}
+              >
+                <i className="fa fa-file-excel mr-1"/>
+                REPORTE EXCEL
+              </a>
+        </Col>
         <Col span={24}>
           <Table
             loading={obrasFetching}

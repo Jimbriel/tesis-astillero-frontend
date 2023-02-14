@@ -252,6 +252,8 @@ const Empresa = (props) => {
     }, [isModalOpen, filtrarContratista]);
 
   const DataSource = JsonData?.map((prop, key) => {
+    // console.log("Informacion");
+    // console.log(prop.users.id_perfil);
     var obj = {};
     var estado = "";
     switch (prop.estado?.trim()) {
@@ -267,6 +269,8 @@ const Empresa = (props) => {
       default:
         estado = "";
     }
+    obj.perfil = prop.users.id_perfil;
+    
     obj.tipoContratista =<span> {"Tipo " + prop.tipo_contratista}</span>
     obj.representante = prop.users.name;
     obj.estado_text = estado;
@@ -318,7 +322,20 @@ const Empresa = (props) => {
         obj={obj}
         toggle={() => closeModal()}
       />
-
+      <Row gutter={[16, 16]}>
+        <Col span={24}>
+            <div
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '20'
+                }}
+                >
+                <b style={{fontSize: '20px'}}>EMPRESA CONTRATISTA</b>
+            </div>
+        </Col>
+      </Row>
       <Row gutter={[16, 16]}>
         <Col>
           <Button
@@ -336,6 +353,19 @@ const Empresa = (props) => {
           >
             <span style={{ fontSize: "21px" }}>Nuevo</span>
           </Button>
+        </Col>
+        <Col span={18}>
+        </Col>
+        <Col>
+              <a
+                // href={Url + 'Reportes/ReporteContratistas'}
+                href={"http://localhost:90/api/Reportes/ReporteContratistas/"}
+                className="btn d-flex align-items-center"
+                style={{background:"#6ae695", color: "#fff"}}
+              >
+                <i className="fa fa-file-excel mr-1"/>
+                REPORTE EXCEL
+              </a>
         </Col>
         <Col span={24}>
           <Table
