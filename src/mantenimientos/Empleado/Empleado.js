@@ -201,7 +201,7 @@ const Empleado = (props) => {
       title: () => {
         return <span className="text-primary">Acciones</span>;
       },
-      dataIndex: "acciones",
+      dataIndex: sessionstate.data_user.id_perfil === 1 ? "acciones" : "",
       key: "acciones",
       // render: (val) => checkBox_render(val),
       align: "center",

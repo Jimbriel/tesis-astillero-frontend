@@ -210,7 +210,7 @@ const Obras = (props) => {
       title: () => {
         return <span className="text-primary">Acciones</span>;
       },
-      dataIndex: "acciones",
+      dataIndex: parseInt(currentUser.user?.id_perfil) === 1 ? "acciones" : "",
       key: "acciones",
       // render: (val) => checkBox_render(val),
       align: "center",
