@@ -22,7 +22,8 @@ const ContratistaStats = (props) => {
         <Row gutter={[16, 16]} className="my-4">
 
             <Col sm={24} md={12} lg={6} >
-                <Link to={{ pathname: "/mantenimientos/obras" }}>
+                <a href="http://localhost:3000/mantenimientos/obras">
+                {/* <Link to={{ pathname: "/mantenimientos/obras" }}> */}
                     <Card bodyStyle={{ padding: 0 }} bordered={false} style={{ cursor: "pointer" }}>
                         <span className="lstick widget-card bg-info"></span>
                         {/* <CardBody> */}
@@ -35,7 +36,9 @@ const ContratistaStats = (props) => {
                         </div>
                         {/* </CardBody> */}
                     </Card>
-                </Link>
+                {/* </Link> */}
+                </a>
+               
 
             </Col>
             <Col sm={24} md={12} lg={6} >

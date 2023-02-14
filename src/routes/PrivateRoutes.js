@@ -19,7 +19,7 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
           />
         );
       } else {
-        if (props.location.pathname === "/" || props.location.state === undefined) {
+        if (props.location.pathname === "/" /* || props.location.state === undefined */) {
           // if (
           //   parseInt(currentUser.user?.id_perfil) === 1 &&
           //   props.location.state === undefined

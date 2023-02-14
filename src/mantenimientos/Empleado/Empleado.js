@@ -19,6 +19,8 @@ import { aggEmpleados } from "../../redux/empleado/EmpleadosDucks";
 
 const Empleado = (props) => {
   const dispatch = useDispatch();
+  const sessionstate = useSelector((state) => state.auth);
+
   const empleados = useSelector((store) => store.empleados.data);
   const Loading = useSelector((store) => store.empleados.isfetching);
   const searchInput = useRef(null);
@@ -350,7 +352,7 @@ const Empleado = (props) => {
         <Col>
               <a
                 // href={Url + 'Reportes/ReporteObra'}
-                href={"http://localhost:90/api/Reportes/ReporteEmpleados/"}
+                href={"http://localhost:82/api/Reportes/ReporteEmpleados?id_usuario=" + sessionstate.data_user.id_usuario}
                 className="btn d-flex align-items-center"
                 style={{background:"#6ae695", color: "#fff"}}
               >

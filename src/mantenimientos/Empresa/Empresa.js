@@ -359,7 +359,7 @@ const Empresa = (props) => {
         <Col>
               <a
                 // href={Url + 'Reportes/ReporteContratistas'}
-                href={"http://localhost:90/api/Reportes/ReporteContratistas/"}
+                href={"http://localhost:82/api/Reportes/ReporteContratistas/"}
                 className="btn d-flex align-items-center"
                 style={{background:"#6ae695", color: "#fff"}}
               >
