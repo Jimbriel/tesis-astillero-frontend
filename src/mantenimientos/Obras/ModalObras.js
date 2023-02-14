@@ -19,6 +19,13 @@ const { RangePicker } = DatePicker;
 const { Option } = Select;
 const ModalObras = (props) => {
   const [ComboContratista, setComboContratista] = useState([]);
+  const [ContratistasEliminados, setContratistasEliminados] = useState([])
+  const [ContratistasAgregados, setContratistasAgregados] = useState([])
+
+  const [contratistas, setContratistas] = useState([
+    props.Accion === "editar" ? props.obj.contratistas : []
+  ]);
+  const [selectedOptions, setSelectedOptions] = useState(contratistas);
   // const [InitialValues, setInitialValues] = useState({});
   // const handleOk = () => {
   //     setIsModalOpen(false);
@@ -33,6 +40,12 @@ const ModalObras = (props) => {
     });
   };
   const onFinish = (values) => {
+    // if (ContratistasEliminados.length > 0) {
+    //   values.contratistas_eliminados = ContratistasEliminados;
+    // }
+    // if (contratistas.length > 0) {
+    //   values.contratistas_agregados = contratistas;
+    // }
     console.log("Success:", values);
     // return false;
     if (props.Accion === "editar") {
@@ -93,16 +106,53 @@ const ModalObras = (props) => {
       });
   }, []);
 
-  const handleSelectChange = (value, changedValues) => {
-    const removedOptions = ComboContratista.filter(option => !value.includes(option.value));
-    // const removedOptions = ComboContratista.map (option => 
-      
-    //   value.includes(option.value) ? option : null
-         
-    //   );
+//   const handleSelectChange = (value, changedValues) => {
+//     if (props.Accion === "editar") {
+//       const removedOptions = selectedOptions.filter(option => !value.includes(option));
+//       const contratistaseliminados = props.obj.contratistas.filter(option => !value.includes(option));
+//       if(contratistaseliminados.length > 0){
+//         setContratistasEliminados(...ContratistasEliminados, contratistaseliminados)
+//       }
 
-    console.log('Opciones eliminadas:', removedOptions);
-  }
+//       console.log('Opciones eliminadas:', contratistaseliminados);
+  
+//       const addedOptions = value.filter(option => !selectedOptions.includes(option));
+//       console.log('Nuevas opciones:', addedOptions);
+
+//       // if (addedOptions.length > 0) {
+//       //   setContratistasAgregados(...ContratistasAgregados, addedOptions)
+//       // }
+  
+//       setSelectedOptions(value);
+//       setContratistas(value);
+//     }
+    
+// };
+
+  // const handleSelectChange = (value, changedValues) => {
+  //   if (props.Accion === "editar") {
+  //     if (props.obj.contratistas?.length > 0) {
+  //       const removedOptions = props.obj.contratistas.filter(option => !value.includes(option.value));
+  //       if (removedOptions.length > 0) {
+  //         setContratistasEliminados(removedOptions)
+  //       }
+  //       console.log('Opciones eliminadas:', removedOptions);
+  //     }
+
+  //     const addedOptions = ComboContratista.filter(option => value.includes(option.value));
+  //     if (addedOptions.length > 0) {
+  //       setContratistasAgregados(addedOptions)
+  //     }
+  //     console.log('Opciones nuevas:', addedOptions);
+  //   }
+
+  //   // const removedOptions = ComboContratista.map (option => 
+
+  //   //   value.includes(option.value) ? option : null
+
+  //   //   );
+
+  // }
 
   useEffect(() => {
     filtrarContratista();
@@ -183,7 +233,7 @@ const ModalObras = (props) => {
           <Select
             mode="multiple"
             options={ComboContratista}
-            onChange={handleSelectChange}
+            // onChange={handleSelectChange}
             placeholder="Seleccionar Empresa"
           ></Select>
         </Form.Item>
@@ -209,7 +259,7 @@ const ModalObras = (props) => {
         </Form.Item>
 
         <Form.Item label="Lugar de Trabajo" name="lugar">
-        <Select mode="multiple" placeholder="Jornada de trabajo">
+          <Select mode="multiple" placeholder="Jornada de trabajo">
             <Option value="puerto">puerto</Option>
             <Option value="dique">dique</Option>
             <Option value="taller1">taller de carpinteria</Option>
