@@ -11,16 +11,12 @@ import {
   Table,
 } from "antd";
 import { FilterOutlined, PlusCircleOutlined } from "@ant-design/icons";
-import { MantenimientosService } from "../../jwt/_services";
-// import { useEffect } from "react";
-import ModalEmpresa from "./ModalEmpresa";
+import { MantenimientosService } from "../jwt/_services";
 
-const Empresa = (props) => {
+const ReporteContratistas = (props) => {
   const searchInput = useRef(null);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
-    // setSearchText(selectedKeys[0]);
-    // setSearchedColumn(dataIndex);
   };
   const notificacion = (type, mensaje, descripcion) => {
     notification[type]({
@@ -79,19 +75,6 @@ const Empresa = (props) => {
           >
             Limpiar
           </Button>
-          {/* <Button
-                        type="link"
-                        size="small"
-                        onClick={() => {
-                            confirm({
-                                closeDropdown: false,
-                            });
-                            setSearchText(selectedKeys[0]);
-                            setSearchedColumn(dataIndex);
-                        }}
-                    >
-                        Filter
-                    </Button> */}
         </Space>
       </div>
     ),
@@ -117,6 +100,8 @@ const Empresa = (props) => {
 
   const [obj, setObj] = useState({});
   const [Loading, setLoading] = useState(false);
+
+
   const columns = [
     {
       title: () => {
@@ -181,44 +166,8 @@ const Empresa = (props) => {
       align: "center",
       width: 200,
     },
-    {
-      title: () => {
-        return <span className="text-primary">Acciones</span>;
-      },
-      dataIndex: "acciones",
-      key: "acciones",
-      // render: (val) => checkBox_render(val),
-      align: "center",
-      fixed: "right",
-      width: 200,
-    },
   ];
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const actualizarContratista = (data) => {
-    MantenimientosService.actualizarContratista(data)
-      .then(
-        (data) => {
-          notificacion(
-            "success",
-            "Contratista Actualizado Exitosamente",
-            data.text.contratista.razon_social
-          );
-        },
-        (error) => {
-          notificacion("error", "Error en Actualizar Contratista ", error);
-          console.log(error);
-        }
-      )
-      .finally(() => {});
-  };
 
   const filtrarContratista = useCallback((data = {}) => {
     setLoading(true);
@@ -262,40 +211,7 @@ const Empresa = (props) => {
     obj.representante = prop.users.name;
     obj.estado_text = estado;
     obj.key = key + 1;
-    obj.acciones = (
-      <Row justify="center" gutter={[8, 8]}>
-        <Col>
-          <Button
-            type="primary"
-            onClick={() => {
-              let obj = DataSource.find((o) => o.key === key + 1);
-              setObj(obj);
-              setAccion("editar");
-              showModal();
-            }}
-          >
-            <i className="fa fa-edit" />
-          </Button>
-        </Col>
-        <Col>
-          <Button
-            type="primary"
-            danger
-            onClick={() => {
-              let obj = DataSource.find((o) => o.key === key + 1);
-              obj.estado = "E";
-              obj.acciones = "";
-              obj.tipoContratista = "";
-              // setObj(obj);
-              actualizarContratista(obj);
-              filtrarContratista();
-            }}
-          >
-            <i className="fa fa-times" />
-          </Button>
-        </Col>
-      </Row>
-    );
+    console.log(obj)
     return { ...prop, ...obj };
   });
   // const [searchText, setSearchText] = useState('');
@@ -303,13 +219,20 @@ const Empresa = (props) => {
 
   return (
     <Card>
-      <ModalEmpresa
-        Accion={titulo}
-        isModalOpen={isModalOpen}
-        obj={obj}
-        toggle={() => closeModal()}
-      />
-
+        <Row gutter={[16, 16]}>
+            <Col span={24}>
+                <div
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '20'
+                    }}
+                    >
+                    <b style={{fontSize: '20px'}}>REPORTE CONTRATISTAS</b>
+                </div>
+            </Col>
+        </Row>
       <Row gutter={[16, 16]}>
         <Col>
           <Button
@@ -322,24 +245,10 @@ const Empresa = (props) => {
             onClick={() => {
               setObj({});
               setAccion("nuevo");
-              showModal();
             }}
           >
             <span style={{ fontSize: "21px" }}>Nuevo</span>
           </Button>
-        </Col>
-        <Col span={18}>
-        </Col>
-        <Col>
-              <a
-                // href={Url + 'Reportes/ReporteContratistas'}
-                href={"http://localhost:90/api/Reportes/ReporteContratistas/"}
-                className="btn d-flex align-items-center"
-                style={{background:"#6ae695", color: "#fff"}}
-              >
-                <i className="fa fa-file-excel mr-1"/>
-                REPORTE EXCEL
-              </a>
         </Col>
         <Col span={24}>
           <Table
@@ -366,4 +275,4 @@ const Empresa = (props) => {
   );
 };
 
-export default Empresa;
+export default ReporteContratistas;
