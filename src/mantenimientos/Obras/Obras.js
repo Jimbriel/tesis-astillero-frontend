@@ -22,6 +22,8 @@ const Obras = (props) => {
   const obras = useSelector((store) => store.obras.data);
   const obrasFetching = useSelector((store) => store.obras.isfetching);
   const searchInput = useRef(null);
+  const sessionstate = useSelector((state) => state.auth);
+
 
   const currentUser = AuthenticationService.currentUserValue;
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -389,7 +391,7 @@ const Obras = (props) => {
         <Col>
               <a
                 // href={Url + 'Reportes/ReporteObra'}
-                href={"http://localhost:82/api/Reportes/ReporteObra/"}
+                href={"http://localhost:90/api/Reportes/ReporteObra?id_usuario=" + sessionstate.data_user.id_usuario}
                 className="btn d-flex align-items-center"
                 style={{background:"#6ae695", color: "#fff"}}
               >

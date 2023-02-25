@@ -13,10 +13,12 @@ import {
 import { FilterOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { MantenimientosService } from "../../jwt/_services";
 // import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import ModalEmpresa from "./ModalEmpresa";
 
 const Empresa = (props) => {
   const searchInput = useRef(null);
+  const sessionstate = useSelector((state) => state.auth);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     // setSearchText(selectedKeys[0]);
@@ -359,7 +361,7 @@ const Empresa = (props) => {
         <Col>
               <a
                 // href={Url + 'Reportes/ReporteContratistas'}
-                href={"http://localhost:82/api/Reportes/ReporteContratistas/"}
+                href={"http://localhost:90/api/Reportes/ReporteContratistas/" /* ?id_usuario=" + sessionstate.data_user.id_usuario */}
                 className="btn d-flex align-items-center"
                 style={{background:"#6ae695", color: "#fff"}}
               >
