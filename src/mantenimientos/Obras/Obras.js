@@ -9,6 +9,7 @@ import {
   Row,
   Space,
   Table,
+  Tag,
 } from "antd";
 import { FilterOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { AuthenticationService, MantenimientosService } from "../../jwt/_services";
@@ -344,6 +345,80 @@ const Obras = (props) => {
   // const [searchText, setSearchText] = useState('');
   // const [searchedColumn, setSearchedColumn] = useState('');
 
+  const expandedRowRender = (record) => {
+    const columns = [
+      {
+        title: "Empresa",
+        dataIndex: "razon_social",
+        key: "razon_social",
+        align: "center",
+      },
+      {
+        title: "Representante",
+        dataIndex: "representante",
+        key: "representante",
+        align: "center",
+      },
+      {
+        title: "Estado de Revision",
+        dataIndex: "estado_aprobacion",
+        key: "estado_aprobacion",
+        align: "center",
+        width: 200,
+        render: (val, record) => {
+          var text;
+          var color;
+          switch (record?.contratista?.estado_aprobacion) {
+            case "A":
+              text = "Aprobado";
+              color = "green";
+              break;
+            case "R":
+              text = "Rechazado";
+              color = "red";
+              break;
+            case "P":
+              text = "Pendiente";
+              color = "orange";
+              break;
+            default:
+              break;
+          }
+          return <Tag color={color}>{text}</Tag>;
+        },
+      },
+      {
+        title: "Reporte Empleados",
+        dataIndex: "reporte",
+        key: "reporte",
+        align: "center",
+        width: 200,
+        fixed: "right",
+      }
+    ]
+    const data = record.obracontratista?.map((prop, key) => {
+      var obj = {};
+      obj.razon_social = prop.contratista?.razon_social;
+      obj.representante = prop.contratista?.representante;
+      obj.key = key + 1;
+      obj.reporte =
+        <Row justify={"center"}>
+          <a
+            // href={Url + 'Reportes/ReporteObra'}
+            href={"http://192.168.14.72:82/reporte/cargar_pdf_formato0012/" + prop.obra_id + "/" + prop.contratista_id}
+            className="btn d-flex align-items-center"
+            style={{ background: "#ff4d4f", color: "#fff", fontSize: "8px" }}
+          >
+            <i className="fa fa-file-pdf mr-1" />
+          </a>
+        </Row>
+
+      return { ...prop, ...obj };
+    }
+    );
+    return <Table columns={columns} dataSource={data} pagination={false} />;
+  }
+
   return (
     <Card>
       <ModalObras
@@ -354,20 +429,20 @@ const Obras = (props) => {
       />
       <Row gutter={[16, 16]}>
         <Col span={24}>
-            <div
-                style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: '20'
-                }}
-                >
-                <b style={{fontSize: '20px'}}>OBRAS</b>
-            </div>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '20'
+            }}
+          >
+            <b style={{ fontSize: '20px' }}>OBRAS</b>
+          </div>
         </Col>
       </Row>
       <Row gutter={[16, 16]}>
-      {parseInt(currentUser.user?.id_perfil) === 1 && (
+        {parseInt(currentUser.user?.id_perfil) === 1 && (
           <Col>
             <Button
               type="primary"
@@ -389,15 +464,15 @@ const Obras = (props) => {
         <Col span={18}>
         </Col>
         <Col>
-              <a
-                // href={Url + 'Reportes/ReporteObra'}
-                href={"http://localhost:90/api/Reportes/ReporteObra?id_usuario=" + sessionstate.data_user.id_usuario}
-                className="btn d-flex align-items-center"
-                style={{background:"#6ae695", color: "#fff"}}
-              >
-                <i className="fa fa-file-excel mr-1"/>
-                REPORTE EXCEL
-              </a>
+          <a
+            // href={Url + 'Reportes/ReporteObra'}
+            href={"http://localhost:90/api/Reportes/ReporteObra?id_usuario=" + sessionstate.data_user.id_usuario}
+            className="btn d-flex align-items-center"
+            style={{ background: "#6ae695", color: "#fff" }}
+          >
+            <i className="fa fa-file-excel mr-1" />
+            REPORTE EXCEL
+          </a>
         </Col>
         <Col span={24}>
           <Table
@@ -414,6 +489,9 @@ const Obras = (props) => {
               position: ["none", "bottomCenter"],
               pageSize: 100,
               hideOnSinglePage: true,
+            }}
+            expandable={{
+              expandedRowRender,
             }}
             showSizeChanger={false}
             scroll={{ x: 1200 /*  y: 300 */ }}
