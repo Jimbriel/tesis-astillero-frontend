@@ -15,6 +15,7 @@ const Empleado = lazy(() => import("../mantenimientos/Empleado/Empleado"));
 // const ReporteContratistas = lazy(() => import("../reportes/ReporteContratistas"));
 // const ReporteEmpleados = lazy(() => import("../reportes/ReporteEmpleados"));
 const ReportesGenerales = lazy(() => import("../reportes/ReportesGenerales"));
+const Documento = lazy(() => import("../mantenimientos/Documentos/Documento"));
 
 var ThemeRoutes = [
   {
@@ -98,6 +99,13 @@ var ThemeRoutes = [
         component: ReportesGenerales,
         // href: "http://localhost:90/api/Reportes/ReporteGeneral/"
       },
+      {
+        path: "/mantenimientos/documento",
+        name: "Documento",
+        mini: "B",
+        icon: "mdi mdi-adjust",
+        component: Documento,
+      }
     ],
   },
   //Reportes

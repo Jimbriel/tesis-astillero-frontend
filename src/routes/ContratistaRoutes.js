@@ -10,6 +10,7 @@ import { lazy } from "react";
 const Obras = lazy(() => import("../mantenimientos/Obras/Obras"));
 const Empleado = lazy(() => import("../mantenimientos/Empleado/Empleado"));
 const MainDashboard = lazy(() => import("../views/dashboards/MainDashboard"));
+const Documento = lazy(() => import("../mantenimientos/Documentos/Documento"));
 
 var ThemeRoutes = [
   {
@@ -73,6 +74,13 @@ var ThemeRoutes = [
         mini: "B",
         icon: "mdi mdi-adjust",
         component: Empleado,
+      },
+      {
+        path: "/mantenimientos/documentos",
+        name: "Documentos",
+        mini: "B",
+        icon: "mdi mdi-adjust",
+        component: Documento,
       },
     ],
   },
