@@ -19,26 +19,28 @@ const ContratistaStats = (props) => {
 
     const obras = useSelector((store) => store.obras.data);
     const empleados = useSelector((store) => store.empleados.data);
+    const contratista = useSelector((store) => store.auth.data_user.contratista);
+    const auth = useSelector((store) => store.auth.data_user);
     return (
         <Row gutter={[16, 16]} className="my-4">
 
             <Col sm={24} md={12} lg={6} >
-                <a href="http://localhost:3001/mantenimientos/obras">
-                    {/* <Link to={{ pathname: "/mantenimientos/obras" }}> */}
-                    <Card bodyStyle={{ padding: 0 }} bordered={false} style={{ cursor: "pointer" }}>
-                        <span className="lstick widget-card bg-info"></span>
-                        {/* <CardBody> */}
-                        <div className="d-flex p-4">
-                            <div className="mr-3 align-self-center"><img src={img3} alt="assets" /></div>
-                            <div className="align-self-center">
-                                <h6 className="text-muted mt-2 mb-0">OBRAS ASIGNADAS</h6>
-                                <h2 className="mt-0 ">{obras.length}</h2>
-                            </div>
+                {/* <a href="http://localhost:3001/mantenimientos/obras"> */}
+                {/* <Link to={{ pathname: "/mantenimientos/obras" }}> */}
+                <Card bodyStyle={{ padding: 0 }} bordered={false} style={{ cursor: "pointer" }} onClick={() => history.push('/mantenimientos/obras')}>
+                    <span className="lstick widget-card bg-info"></span>
+                    {/* <CardBody> */}
+                    <div className="d-flex p-4">
+                        <div className="mr-3 align-self-center"><img src={img3} alt="assets" /></div>
+                        <div className="align-self-center">
+                            <h6 className="text-muted mt-2 mb-0">OBRAS ASIGNADAS</h6>
+                            <h2 className="mt-0 ">{obras.length}</h2>
                         </div>
-                        {/* </CardBody> */}
-                    </Card>
-                    {/* </Link> */}
-                </a>
+                    </div>
+                    {/* </CardBody> */}
+                </Card>
+                {/* </Link> */}
+                {/* </a> */}
 
 
             </Col>
@@ -60,9 +62,12 @@ const ContratistaStats = (props) => {
 
             </Col>
 
-            <Col sm={24} md={12} lg={6} >
+            <Col sm={24} md={12} lg={6} hidden={ auth.id_perfil === 1 ? true : false }>
                 {/* <Link to={{ pathname: "/mantenimento/obras" }}> */}
-                <Card bodyStyle={{ padding: 0 }} bordered={false} style={{ cursor: "pointer" }} onClick={() => history.push('/mantenimientos/documento')}>
+                <Card bodyStyle={{ padding: 0 }} bordered={false} style={{ cursor: "pointer" }} onClick={() => {
+                    var ruta = '/mantenimientos/documentos/' + contratista.id;
+                    history.push(ruta);
+                }}>
                     <span className="lstick widget-card bg-info"></span>
                     {/* <CardBody> */}
                     <div className="d-flex p-4">

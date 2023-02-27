@@ -5,6 +5,7 @@
 import AdminRoutes from "../../routes/AdminRoutes";
 import RoutesMain from "../../routes/Router";
 import ContratistaRoutes from "../../routes/ContratistaRoutes";
+import { MantenimientosService } from "../../jwt/_services";
 
 //constantes
 
@@ -17,11 +18,14 @@ const INIT_STATE = {
   time_token: 0,
   end_token: null,
   isFetching: false,
+  isFetchingContratista: false,
 };
 //types
 export const LOGIN_RENEW_TOKEN = "LOGIN_RENEW_TOKEN";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_ERROR = "LOGIN_ERROR";
+export const SET_CONTRATISTA = "SET_CONTRATISTA";
+export const SET_CONTRATISTA_CARGANDO = "SET_CONTRATISTA_CARGANDO";
 //reducer
 
 export default function authReducer(state = INIT_STATE, action) {
@@ -60,6 +64,16 @@ export default function authReducer(state = INIT_STATE, action) {
         isAuthenticated: false,
         isFetching: false,
       };
+    case SET_CONTRATISTA_CARGANDO:
+      return {
+        ...state,
+        isFetchingContratista: action.payload,
+      }
+    case SET_CONTRATISTA:
+      return {
+        ...state,
+        data_user: action.payload,
+      }
     default:
       return state;
   }
@@ -97,4 +111,38 @@ export const setLoginSuccess = (obj) => async (dispatch, getState) => {
   //   type: LOGIN_SUCCESS,
   //   payload: obj,
   // };
+};
+
+export const obtenerContratista = (obj = null) => async (dispatch, getState) => {
+  const { data_user } = getState().auth;
+  try {
+    var id_contratista = obj?.id_contratista !== undefined ? obj?.id_contratista : data_user.contratista?.id;
+
+    if (id_contratista) {
+      var send = {
+        id: id_contratista
+      }
+      dispatch(setContratistaCargando(true));
+      MantenimientosService.obtenerContratista(send).then((res) => {
+        console.log(res.text.contratista);
+        data_user.contratista = res.text.contratista;
+        dispatch({ type: SET_CONTRATISTA, payload: data_user });
+      }).finally(() => {
+        dispatch(setContratistaCargando(false));
+      });
+    }
+
+  } catch (err) {
+    console.log(err);
+  }
+
+
+}
+
+export const setContratistaCargando = (obj) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: SET_CONTRATISTA_CARGANDO, payload: obj });
+  } catch (err) {
+    console.log(err);
+  }
 };

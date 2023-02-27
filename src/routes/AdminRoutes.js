@@ -100,7 +100,7 @@ var ThemeRoutes = [
         // href: "http://localhost:90/api/Reportes/ReporteGeneral/"
       },
       {
-        path: "/mantenimientos/documento",
+        path: "/mantenimientos/documentos/:id",
         name: "Documento",
         mini: "B",
         icon: "mdi mdi-adjust",

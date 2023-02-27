@@ -19,8 +19,52 @@ export const MantenimientosService = {
   actualizarObra,
   crearEmpleado,
   actualizarEmpleado,
-  validarCodigoRegistro
+  validarCodigoRegistro,
+  subirDocumentoContratista,
+  obtenerContratista,
+  updateDocumentoContratista,
 };
+
+function updateDocumentoContratista(data) {
+  const requestOptions = {
+    method: "post",
+    headers: AuthHeader(),
+    body: JSON.stringify(data),
+  };
+
+  return fetch(`${Url}mantenimientos/updateDocumentoContratista`, requestOptions)
+    .then(HandleResponse)
+    .then((response) => {
+      return response;
+    });
+}
+
+function subirDocumentoContratista(data) {
+  const requestOptions = {
+    method: "post",
+    headers: AuthHeader(),
+    body: JSON.stringify(data),
+  };
+
+  return fetch(`${Url}mantenimientos/subirDocumentoContratista`, requestOptions)
+    .then(HandleResponse)
+    .then((response) => {
+      return response;
+    });
+}
+function obtenerContratista(data) {
+  const requestOptions = {
+    method: "post",
+    headers: AuthHeader(),
+    body: JSON.stringify(data),
+  };
+
+  return fetch(`${Url}mantenimientos/obtenerContratista`, requestOptions)
+    .then(HandleResponse)
+    .then((response) => {
+      return response;
+    });
+}
 
 function actualizarContratistaRegistro(data) {
   const requestOptions = {

@@ -17,6 +17,7 @@ import ModalObras from "./ModalObras";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { aggObras } from "../../redux/obras/ObrasDucks";
+import { Url, Url_Base } from "../../jwt/_services/Url.service";
 
 const Obras = (props) => {
   const dispatch = useDispatch();
@@ -405,7 +406,7 @@ const Obras = (props) => {
         <Row justify={"center"}>
           <a
             // href={Url + 'Reportes/ReporteObra'}
-            href={"http://192.168.14.72:82/reporte/cargar_pdf_formato0012/" + prop.obra_id + "/" + prop.contratista_id}
+            href={Url_Base + "reporte/cargar_pdf_formato0012/" + prop.obra_id + "/" + prop.contratista_id}
             className="btn d-flex align-items-center"
             style={{ background: "#ff4d4f", color: "#fff", fontSize: "8px" }}
           >
@@ -466,7 +467,7 @@ const Obras = (props) => {
         <Col>
           <a
             // href={Url + 'Reportes/ReporteObra'}
-            href={"http://localhost:90/api/Reportes/ReporteObra?id_usuario=" + sessionstate.data_user.id_usuario}
+            href={Url + "Reportes/ReporteObra?id_usuario=" + sessionstate.data_user.id_usuario}
             className="btn d-flex align-items-center"
             style={{ background: "#6ae695", color: "#fff" }}
           >

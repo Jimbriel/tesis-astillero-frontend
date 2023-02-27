@@ -76,7 +76,7 @@ var ThemeRoutes = [
         component: Empleado,
       },
       {
-        path: "/mantenimientos/documentos",
+        path: "/mantenimientos/documentos/:id",
         name: "Documentos",
         mini: "B",
         icon: "mdi mdi-adjust",

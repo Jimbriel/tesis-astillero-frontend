@@ -9,15 +9,18 @@ import {
   Row,
   Space,
   Table,
+  Tooltip,
 } from "antd";
-import { FilterOutlined, PlusCircleOutlined } from "@ant-design/icons";
+import { EyeOutlined, FilterOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { MantenimientosService } from "../../jwt/_services";
 // import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ModalEmpresa from "./ModalEmpresa";
+import { useHistory } from "react-router-dom";
 
 const Empresa = (props) => {
   const searchInput = useRef(null);
+  let history = useHistory();
   const sessionstate = useSelector((state) => state.auth);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -228,7 +231,7 @@ const Empresa = (props) => {
           console.log(error);
         }
       )
-      .finally(() => {});
+      .finally(() => { });
   };
 
   const filtrarContratista = useCallback((data = {}) => {
@@ -248,10 +251,10 @@ const Empresa = (props) => {
       });
   }, []);
 
-    useEffect(() => {
-      var obj = { estado: ["A", "I"] };
-      filtrarContratista(obj);
-    }, [isModalOpen, filtrarContratista]);
+  useEffect(() => {
+    var obj = { estado: ["A", "I"] };
+    filtrarContratista(obj);
+  }, [isModalOpen, filtrarContratista]);
 
   const DataSource = JsonData?.map((prop, key) => {
     // console.log("Informacion");
@@ -272,8 +275,8 @@ const Empresa = (props) => {
         estado = "";
     }
     obj.perfil = prop.users.id_perfil;
-    
-    obj.tipoContratista =<span> {"Tipo " + prop.tipo_contratista}</span>
+
+    obj.tipoContratista = <span> {"Tipo " + prop.tipo_contratista}</span>
     obj.representante = prop.users.name;
     obj.estado_text = estado;
     obj.key = key + 1;
@@ -309,6 +312,17 @@ const Empresa = (props) => {
             <i className="fa fa-times" />
           </Button>
         </Col>
+        <Col>
+          <Tooltip title="Ver documentacion">
+            <Button type="primary" icon={<EyeOutlined />}
+              onClick={() => {
+                let obj = DataSource.find((o) => o.key === key + 1);
+                var ruta = '/mantenimientos/documentos/' + obj.id;
+                history.push(ruta);
+              }}
+            />
+          </Tooltip>
+        </Col>
       </Row>
     );
     return { ...prop, ...obj };
@@ -326,16 +340,16 @@ const Empresa = (props) => {
       />
       <Row gutter={[16, 16]}>
         <Col span={24}>
-            <div
-                style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: '20'
-                }}
-                >
-                <b style={{fontSize: '20px'}}>EMPRESA CONTRATISTA</b>
-            </div>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '20'
+            }}
+          >
+            <b style={{ fontSize: '20px' }}>EMPRESA CONTRATISTA</b>
+          </div>
         </Col>
       </Row>
       <Row gutter={[16, 16]}>
@@ -359,15 +373,15 @@ const Empresa = (props) => {
         <Col span={18}>
         </Col>
         <Col>
-              <a
-                // href={Url + 'Reportes/ReporteContratistas'}
-                href={"http://localhost:90/api/Reportes/ReporteContratistas/" /* ?id_usuario=" + sessionstate.data_user.id_usuario */}
-                className="btn d-flex align-items-center"
-                style={{background:"#6ae695", color: "#fff"}}
-              >
-                <i className="fa fa-file-excel mr-1"/>
-                REPORTE EXCEL
-              </a>
+          <a
+            // href={Url + 'Reportes/ReporteContratistas'}
+            href={"http://localhost:90/api/Reportes/ReporteContratistas/" /* ?id_usuario=" + sessionstate.data_user.id_usuario */}
+            className="btn d-flex align-items-center"
+            style={{ background: "#6ae695", color: "#fff" }}
+          >
+            <i className="fa fa-file-excel mr-1" />
+            REPORTE EXCEL
+          </a>
         </Col>
         <Col span={24}>
           <Table
