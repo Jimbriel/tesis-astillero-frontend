@@ -1,6 +1,7 @@
 // import axios from "axios";
 
-import { MantenimientosService } from "../../jwt/_services";
+import { AuthenticationService, MantenimientosService } from "../../jwt/_services";
+import { setLoginError } from "../auth/authDucks";
 
 // import { useHistory } from "react-router-dom";
 // import { AuthenticationService } from "../../jwt/_services";
@@ -41,6 +42,10 @@ export const aggObras = (obj = {}) => async (dispatch, getState) => {
     MantenimientosService.filtrarObras(obj)
       .then((result) => {
         var obras = result.text.obra;
+        // if(result.status === 400 && result.text.message === 'El token ha expirado. Por favor contactarse con el administrador del sistema.'){
+        //   dispatch(setLoginError());
+        //   AuthenticationService.logout();
+        // }
         dispatch({ type: AGREGAR_OBRAS, payload: obras });
       })
       .finally(() => {

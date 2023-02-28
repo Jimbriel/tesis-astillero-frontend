@@ -34,7 +34,7 @@ const ContratistaStats = (props) => {
                         <div className="mr-3 align-self-center"><img src={img3} alt="assets" /></div>
                         <div className="align-self-center">
                             <h6 className="text-muted mt-2 mb-0">OBRAS ASIGNADAS</h6>
-                            <h2 className="mt-0 ">{obras.length}</h2>
+                            <h2 className="mt-0 ">{obras?.length}</h2>
                         </div>
                     </div>
                     {/* </CardBody> */}
@@ -53,7 +53,7 @@ const ContratistaStats = (props) => {
                         <div className="mr-3 align-self-center"><img src={img4} alt="assets" /></div>
                         <div className="align-self-center">
                             <h6 className="text-muted mt-2 mb-0">EMPLEADOS REGISTRADOS</h6>
-                            <h2 className="mt-0 ">{empleados.length}</h2>
+                            <h2 className="mt-0 ">{empleados?.length}</h2>
                         </div>
                     </div>
                     {/* </CardBody> */}

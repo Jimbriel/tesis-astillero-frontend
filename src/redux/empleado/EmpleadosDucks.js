@@ -1,6 +1,7 @@
 // import axios from "axios";
 
-import { MantenimientosService } from "../../jwt/_services";
+import { AuthenticationService, MantenimientosService } from "../../jwt/_services";
+import { setLoginError } from "../auth/authDucks";
 
 // import { useHistory } from "react-router-dom";
 // import { AuthenticationService } from "../../jwt/_services";
@@ -44,6 +45,10 @@ export const aggEmpleados =
       MantenimientosService.filtrarEmpleados(obj)
         .then((result) => {
           console.log(result);
+          if(result.status === 400){
+            dispatch(setLoginError());
+            AuthenticationService.logout();
+          }
           var empleados = result.text.empleado;
           dispatch({ type: INDEX_EMPLEADO, payload: empleados });
         })

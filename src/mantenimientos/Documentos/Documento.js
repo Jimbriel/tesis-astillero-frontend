@@ -78,7 +78,7 @@ const Documento = (props) => {
 
     ];
 
-    const dataDocmentos = contratista?.tipo_contratista?.tipo_contratista_documento?.map((item, index) => {
+    const dataDocmentos = contratista?.tipocontratista?.tipo_contratista_documento?.map((item, index) => {
         var obj = {}
         var estadoRevision = ""
         var documentoContratista = item.documento_contratista;

@@ -243,6 +243,7 @@ const Obras = (props) => {
         },
         (error) => {
           notificacion("error", "Error en Crear Obra ", error);
+          window.location.reload();
           console.log(error);
         }
       )
@@ -347,6 +348,7 @@ const Obras = (props) => {
   // const [searchedColumn, setSearchedColumn] = useState('');
 
   const expandedRowRender = (record) => {
+
     const columns = [
       {
         title: "Empresa",
@@ -404,20 +406,30 @@ const Obras = (props) => {
       obj.key = key + 1;
       obj.reporte =
         <Row justify={"center"}>
-          <a
+          <Button
+            disabled={prop.contratista?.estado_aprobacion !== "A" ? true : false}
+            href={Url_Base + "reporte/cargar_pdf_formato0012/" + prop.obra_id + "/" + prop.contratista_id}
+            type="primary"
+            danger
+          >
+            <i className="fa fa-file-pdf" />
+
+          </Button>
+          {/* <a
+            aria-disabled={prop.contratista?.estado_aprobacion !== "A" ? true : false}
             // href={Url + 'Reportes/ReporteObra'}
             href={Url_Base + "reporte/cargar_pdf_formato0012/" + prop.obra_id + "/" + prop.contratista_id}
             className="btn d-flex align-items-center"
             style={{ background: "#ff4d4f", color: "#fff", fontSize: "8px" }}
           >
             <i className="fa fa-file-pdf mr-1" />
-          </a>
+          </a> */}
         </Row>
 
       return { ...prop, ...obj };
     }
     );
-    return <Table columns={columns} dataSource={data} pagination={false} />;
+      return <Table columns={columns} dataSource={record.estado === "A" ? data : []} pagination={false} />;
   }
 
   return (

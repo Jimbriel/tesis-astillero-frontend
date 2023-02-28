@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Input, notification, Row, Select } from "antd";
-import { MantenimientosService } from "../../jwt/_services";
+import { AuthenticationService, MantenimientosService } from "../../jwt/_services";
 import { useHistory } from "react-router-dom";
 import img2 from '../../assets/images/background/login-register.jpg';
+import { useDispatch } from "react-redux";
+import { setLoginError } from "../../redux/auth/authDucks";
 
 const sidebarBackground = {
     backgroundImage: "url(" + img2 + ")",
@@ -14,7 +16,7 @@ const Registro = (props) => {
     let history = useHistory();
     const [form] = Form.useForm();
 
-
+    const dispatch = useDispatch();
     const [Hidden, setHidden] = useState(false);
     const [IdContratista, setIdContratista] = useState(0);
 
@@ -43,6 +45,8 @@ const Registro = (props) => {
                 }
             )
             .finally(() => {
+                dispatch(setLoginError());
+                AuthenticationService.logout();
                 history.push("/");
             });
 
@@ -137,14 +141,14 @@ const Registro = (props) => {
                             <Input disabled={true} />
                         </Form.Item>
 
-                        <Form.Item name="tipo_contratista" label="Tipo Contratista">
+                        {/* <Form.Item name="tipo_contratista" label="Tipo Contratista">
                             <Select placeholder="Seleccione un tipo de contratista">
                                 <Select.Option value="1">Tipo 1</Select.Option>
                                 <Select.Option value="2">Tipo 2</Select.Option>
                                 <Select.Option value="3">Tipo 3</Select.Option>
                                 <Select.Option value="4">Tipo 4</Select.Option>
                             </Select>
-                        </Form.Item>
+                        </Form.Item> */}
                         <Row justify="center">
                             <Form.Item>
                                 <Button type="primary" htmlType="submit">

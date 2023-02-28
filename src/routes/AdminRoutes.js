@@ -32,14 +32,14 @@ var ThemeRoutes = [
     badges: "side-badge badge badge-info",
     badgeno: "3",
     child: [
-       {
+      {
         path: "/dashboards/main",
         name: "Main Dashboard",
         mini: "B",
         icon: "mdi mdi-adjust",
         component: MainDashboard,
       },
-  
+
     ],
   },
   {
@@ -103,6 +103,7 @@ var ThemeRoutes = [
         path: "/mantenimientos/documentos/:id",
         name: "Documento",
         mini: "B",
+        hidden: true,
         icon: "mdi mdi-adjust",
         component: Documento,
       }
@@ -110,44 +111,44 @@ var ThemeRoutes = [
   },
   //Reportes
   // {
-    // collapse: true,
-    // path: "/api/Reportes/ReporteGeneral/",
-    // name: "Reporte General",
-    // icon: "fa fa-wrench",
-    // badges: "side-badge badge badge-info",
-    // href: "http://localhost:90/api/Reportes/ReporteGeneral/"
-    // badgeno: "3",
-    // child: [
-    //   {
-    //     path: "/reportes/obras",
-    //     name: "Reporte Obras",
-    //     mini: "B",
-    //     icon: "mdi mdi-adjust",
-    //     component: ReporteObras,
-    //   },
-    //   {
-    //     path: "/reportes/contratistas",
-    //     name: "Reporte Contratistas",
-    //     mini: "B",
-    //     icon: "mdi mdi-adjust",
-    //     component: ReporteContratistas,
-    //   },
-    //   {
-    //     path: "/reportes/empleados",
-    //     name: "Reporte Empleados",
-    //     mini: "B",
-    //     icon: "mdi mdi-adjust",
-    //     component: ReporteEmpleados,
-    //   },
-    //   {
-    //     path: "/reportes/reportegeneral",
-    //     name: "Reporte General",
-    //     mini: "B",
-    //     icon: "mdi mdi-adjust",
-    //     component: ReportesGenerales,
-    //   },
-    // ],
+  // collapse: true,
+  // path: "/api/Reportes/ReporteGeneral/",
+  // name: "Reporte General",
+  // icon: "fa fa-wrench",
+  // badges: "side-badge badge badge-info",
+  // href: "http://localhost:90/api/Reportes/ReporteGeneral/"
+  // badgeno: "3",
+  // child: [
+  //   {
+  //     path: "/reportes/obras",
+  //     name: "Reporte Obras",
+  //     mini: "B",
+  //     icon: "mdi mdi-adjust",
+  //     component: ReporteObras,
+  //   },
+  //   {
+  //     path: "/reportes/contratistas",
+  //     name: "Reporte Contratistas",
+  //     mini: "B",
+  //     icon: "mdi mdi-adjust",
+  //     component: ReporteContratistas,
+  //   },
+  //   {
+  //     path: "/reportes/empleados",
+  //     name: "Reporte Empleados",
+  //     mini: "B",
+  //     icon: "mdi mdi-adjust",
+  //     component: ReporteEmpleados,
+  //   },
+  //   {
+  //     path: "/reportes/reportegeneral",
+  //     name: "Reporte General",
+  //     mini: "B",
+  //     icon: "mdi mdi-adjust",
+  //     component: ReportesGenerales,
+  //   },
+  // ],
   // },
-  
+
 ];
 export default ThemeRoutes;

@@ -142,6 +142,7 @@ const Sidebar = (props) => {
                     <Collapse isOpen={state[prop.state]}>
                       <ul className="first-level">
                         {prop.child.map((prop, key) => {
+                          if(prop.hidden) return null;
                           if (prop.redirect) return null;
 
                           /*--------------------------------------------------------------------------------*/
