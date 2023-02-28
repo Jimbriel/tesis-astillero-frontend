@@ -29,7 +29,7 @@ const Registro = (props) => {
 
     const onFinish = (values) => {
         console.log({ ...values, id: IdContratista });
-        var obj = { ...values, id: IdContratista, estado_aprobacion: 'A' }
+        var obj = { ...values, id: IdContratista/* , estado_aprobacion: 'A' */ }
         MantenimientosService.actualizarContratistaRegistro(obj)
             .then(
                 (data) => {
