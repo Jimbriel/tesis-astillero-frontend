@@ -227,7 +227,7 @@ const ModalEmpleado = (props) => {
             },
           ]}
         >
-          <Input />
+          <Input maxLength={13} />
         </Form.Item>
         <Form.Item
           label="Nombre"

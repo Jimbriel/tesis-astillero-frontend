@@ -17,6 +17,7 @@ import { MantenimientosService } from "../../jwt/_services";
 import { useDispatch, useSelector } from "react-redux";
 import ModalEmpresa from "./ModalEmpresa";
 import { useHistory } from "react-router-dom";
+import { Url, Url_Base } from "../../jwt/_services/Url.service";
 
 const Empresa = (props) => {
   const searchInput = useRef(null);
@@ -375,7 +376,7 @@ const Empresa = (props) => {
         <Col>
           <a
             // href={Url + 'Reportes/ReporteContratistas'}
-            href={"http://localhost:90/api/Reportes/ReporteContratistas/" /* ?id_usuario=" + sessionstate.data_user.id_usuario */}
+            href={Url + "/Reportes/ReporteContratistas/" /* ?id_usuario=" + sessionstate.data_user.id_usuario */}
             className="btn d-flex align-items-center"
             style={{ background: "#6ae695", color: "#fff" }}
           >

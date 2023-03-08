@@ -11,6 +11,7 @@ import ContratistaRoutes from "../routes/ContratistaRoutes";
 import Spinner from "./../views/spinner/Spinner";
 import { aggObras } from "../redux/obras/ObrasDucks";
 import { aggEmpleados } from "../redux/empleado/EmpleadosDucks";
+import { aggContratistas } from "../redux/contratista/ContratistaDucks";
 export default (props) => {
   const auth = useSelector((state) => state.auth);
   const [width, setWidth] = useState(window.innerWidth);
@@ -63,7 +64,7 @@ export default (props) => {
   }, [settings.activeSidebarType, width]);
 
   if (ThemeR.length === 0) {
-    if(auth.data_user?.id_perfil !== undefined || auth.data_user?.id_perfil !== null){
+    if (auth.data_user?.id_perfil !== undefined || auth.data_user?.id_perfil !== null) {
       switch (auth.data_user?.id_perfil) {
         case 1:
           setThemeR(AdminRoutes);
@@ -71,24 +72,27 @@ export default (props) => {
         case 2:
           setThemeR(ContratistaRoutes);
           break;
-  
+
         default:
           setThemeR(RoutesMain);
       }
-    }else{
+    } else {
       setThemeR(RoutesMain);
 
     }
-    
+
   }
 
   useEffect(() => {
-    if(auth.data_user?.id_perfil !== undefined || auth.data_user?.id_perfil !== null){
+    if (auth.data_user?.id_perfil !== undefined || auth.data_user?.id_perfil !== null) {
       dispatch(aggEmpleados());
       dispatch(aggObras());
+      if (auth.data_user?.id_perfil === 1) {
+        dispatch(aggContratistas());
+      }
     }
     // filtrarObras(obj);
-  }, [dispatch, auth.data_user.id_perfil,props.location]);
+  }, [dispatch, auth.data_user.id_perfil, props.location]);
 
   // useEffect(() => {
   //   console.log(auth.data_user?.id_perfil);

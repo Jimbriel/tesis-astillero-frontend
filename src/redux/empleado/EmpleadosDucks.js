@@ -10,7 +10,7 @@ import { setLoginError } from "../auth/authDucks";
 
 const empleadoinit = {
   data: [],
-  empleado: {},
+  empleado: [],
   isfetching: false,
   //   offset: 0,
 };
@@ -24,6 +24,9 @@ export default function empleadoReducer(state = empleadoinit, action) {
   switch (action.type) {
     case INDEX_EMPLEADO:
       return { ...state, data: action.payload };
+    case SET_EMPLEADO:
+      return { ...state, empleado: action.payload };
+
     //   case LIMPIAR_TAGS:
     //     return {  ...state, data: action.payload };
     //   case SET_TIEMPO_OBRAS:
@@ -37,28 +40,49 @@ export default function empleadoReducer(state = empleadoinit, action) {
 
 //acciones
 
+export const aggEmpleado = (obj = {}) => async (dispatch, getState) => {
+  try {
+    dispatch(loadEmpleado(true));
+    MantenimientosService.filtrarEmpleados(obj)
+      .then((result) => {
+        console.log(result);
+        if (result.status === 400) {
+          dispatch(setLoginError());
+          AuthenticationService.logout();
+        }
+        var empleados = result.text.empleado;
+        dispatch({ type: SET_EMPLEADO, payload: empleados });
+      })
+      .finally(() => {
+        dispatch(loadEmpleado(false));
+      });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export const aggEmpleados =
   (obj = {}) =>
-  async (dispatch, getState) => {
-    try {
-      dispatch(loadEmpleado(true));
-      MantenimientosService.filtrarEmpleados(obj)
-        .then((result) => {
-          console.log(result);
-          if(result.status === 400){
-            dispatch(setLoginError());
-            AuthenticationService.logout();
-          }
-          var empleados = result.text.empleado;
-          dispatch({ type: INDEX_EMPLEADO, payload: empleados });
-        })
-        .finally(() => {
-          dispatch(loadEmpleado(false));
-        });
-    } catch (err) {
-      console.log(err);
-    }
-  };
+    async (dispatch, getState) => {
+      try {
+        dispatch(loadEmpleado(true));
+        MantenimientosService.filtrarEmpleados(obj)
+          .then((result) => {
+            console.log(result);
+            if (result.status === 400) {
+              dispatch(setLoginError());
+              AuthenticationService.logout();
+            }
+            var empleados = result.text.empleado;
+            dispatch({ type: INDEX_EMPLEADO, payload: empleados });
+          })
+          .finally(() => {
+            dispatch(loadEmpleado(false));
+          });
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
 export const loadEmpleado = (obj) => async (dispatch, getState) => {
   try {
@@ -75,7 +99,7 @@ export const crearEmpleado = (obj) => async (dispatch, getState) => {
       .then((result) => {
         console.log(result);
         var empleado = result.text.empleado;
-        dispatch({ type: SET_EMPLEADO, payload: empleado });
+        // dispatch({ type: SET_EMPLEADO, payload: empleado });
       })
       .finally(() => {
         dispatch(loadEmpleado(false));

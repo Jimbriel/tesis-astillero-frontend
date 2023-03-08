@@ -7,8 +7,11 @@ import { lazy } from "react";
 const MainDashboard = lazy(() => import("../views/dashboards/MainDashboard"));
 const Perfil = lazy(() => import("../mantenimientos/Perfil/Perfil"));
 const Obras = lazy(() => import("../mantenimientos/Obras/Obras"));
+const Obra = lazy(() => import("../mantenimientos/Obras/Obra"));
 const Usuario = lazy(() => import("../mantenimientos/Usuarios/Usuario"));
 const Empresa = lazy(() => import("../mantenimientos/Empresa/Empresa"));
+const Contratista = lazy(() => import("../mantenimientos/Empresa/Contratista"));
+const ContratistaEmpleado = lazy(() => import("../mantenimientos/Empleado/ContratistaEmpleado"));
 const Empleado = lazy(() => import("../mantenimientos/Empleado/Empleado"));
 //-----------------------------------------------------------------------------------
 // const ReporteObras = lazy(() => import("../reportes/ReporteObras"));
@@ -71,7 +74,7 @@ var ThemeRoutes = [
         component: Usuario,
       },
       {
-        path: "/mantenimientos/empresa",
+        path: "/mantenimientos/empresas",
         name: "Empresa",
         mini: "B",
         icon: "mdi mdi-adjust",
@@ -85,7 +88,7 @@ var ThemeRoutes = [
         component: Obras,
       },
       {
-        path: "/mantenimientos/empleado",
+        path: "/mantenimientos/empleados",
         name: "Empleado",
         mini: "B",
         icon: "mdi mdi-adjust",
@@ -106,7 +109,31 @@ var ThemeRoutes = [
         hidden: true,
         icon: "mdi mdi-adjust",
         component: Documento,
-      }
+      },
+      {
+        hidden: true,
+        path: "/mantenimientos/obra/:id",
+        name: "Obras",
+        mini: "B",
+        icon: "mdi mdi-adjust",
+        component: Obra,
+      },
+      {
+        hidden: true,
+        path: "/mantenimientos/empleado/:id",
+        name: "Obras",
+        mini: "B",
+        icon: "mdi mdi-adjust",
+        component: ContratistaEmpleado,
+      },
+      {
+        hidden: true,
+        path: "/mantenimientos/contratista/:id",
+        name: "Empresa",
+        mini: "B",
+        icon: "mdi mdi-adjust",
+        component: Contratista,
+      },
     ],
   },
   //Reportes

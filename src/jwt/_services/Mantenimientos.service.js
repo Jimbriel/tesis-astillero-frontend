@@ -23,8 +23,21 @@ export const MantenimientosService = {
   subirDocumentoContratista,
   obtenerContratista,
   updateDocumentoContratista,
+  listarFeeds,
 };
+function listarFeeds(data) {
+  const requestOptions = {
+    method: "post",
+    headers: AuthHeader(),
+    body: JSON.stringify(data),
+  };
 
+  return fetch(`${Url}mantenimientos/listarFeeds`, requestOptions)
+    .then(HandleResponse)
+    .then((response) => {
+      return response;
+    });
+}
 function updateDocumentoContratista(data) {
   const requestOptions = {
     method: "post",

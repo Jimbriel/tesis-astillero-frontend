@@ -122,7 +122,7 @@ const ModalEmpresa = (props) => {
             },
           ]}
         >
-          <Input />
+          <Input maxLength={13}/>
         </Form.Item>
         <Form.Item
           label="Razon Social"

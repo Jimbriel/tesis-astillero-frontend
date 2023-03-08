@@ -34,6 +34,7 @@ import * as data from "./Data";
 import profilephoto from "../../../assets/images/users/1.jpg";
 import { AuthenticationService } from "../../../jwt/_services";
 import { setLoginError } from "../../../redux/auth/authDucks";
+import SearchInput from "../../../components/Buscador/Buscador";
 
 export default () => {
   const dispatch = useDispatch();
@@ -151,14 +152,20 @@ export default () => {
                   <i className="ti-search" />
                 </span>
                 <Collapse isOpen={collapse}>
-                  <form className="app-search">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Search & enter"
+                  <form className="app-search px-0">
+                    <SearchInput
+                      allowClear={true}
+                      placeholder="Buscar en el sistema"
+                      className="form-control p-0"
+                      style={{ width: "100%" }}
+                      suffixIcon={<></>}
                     />
-                    <span className="srh-btn" onClick={searchtoggle.bind(null)}>
-                      <i className="ti-close"></i>
+                    <span
+                      className="srh-btn"
+                      // style={{ top: "20px" }}
+                      onClick={searchtoggle.bind(null)}
+                    >
+                      <i className="ti-close text-secondary"></i>
                     </span>
                   </form>
                 </Collapse>
