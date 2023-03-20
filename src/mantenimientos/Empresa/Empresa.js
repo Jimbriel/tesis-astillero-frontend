@@ -275,10 +275,10 @@ const Empresa = (props) => {
       default:
         estado = "";
     }
-    obj.perfil = prop.users.id_perfil;
+    obj.perfil = prop.users?.id_perfil;
 
     obj.tipoContratista = <span> {"Tipo " + prop.tipo_contratista}</span>
-    obj.representante = prop.users.name;
+    obj.representante = prop.users?.name;
     obj.estado_text = estado;
     obj.key = key + 1;
     obj.acciones = (
@@ -376,7 +376,7 @@ const Empresa = (props) => {
         <Col>
           <a
             // href={Url + 'Reportes/ReporteContratistas'}
-            href={Url + "/Reportes/ReporteContratistas/" /* ?id_usuario=" + sessionstate.data_user.id_usuario */}
+            href={Url + "/Reportes/ReporteContratistas/?id_usuario=" + sessionstate.data_user.id_usuario}
             className="btn d-flex align-items-center"
             style={{ background: "#6ae695", color: "#fff" }}
           >
