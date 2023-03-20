@@ -208,7 +208,7 @@ const ReporteContratistas = (props) => {
         estado = "";
     }
     obj.tipoContratista =<span> {"Tipo " + prop.tipo_contratista}</span>
-    obj.representante = prop.users.name;
+    obj.representante = prop.users?.name;
     obj.estado_text = estado;
     obj.key = key + 1;
     console.log(obj)
@@ -234,7 +234,7 @@ const ReporteContratistas = (props) => {
         </Col>
       </Row>
       <Row gutter={[16, 16]}>
-        <Col>
+        <Col hidden={true}>
           <Button
             type="primary"
             className="d-flex align-items-center"
