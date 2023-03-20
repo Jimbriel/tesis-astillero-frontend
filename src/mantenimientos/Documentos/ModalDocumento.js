@@ -85,7 +85,8 @@ const ModalDocumento = (props) => {
     }
     const dragerProps = {
         name: 'file',
-        // multiple: true,
+        // multiple: false,
+        maxCount: 1,
         action: Url + "uploadimage",
         accept: ".pdf, .jpg, .png, .jpeg",
         onChange(info) {
